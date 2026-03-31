@@ -1,0 +1,164 @@
+{
+  "nav": {
+    "shop": "Boutique",
+    "collections": "Collections",
+    "about": "À propos",
+    "contact": "Contact",
+    "cart": "Panier",
+    "login": "Connexion",
+    "account": "Mon compte",
+    "orders": "Mes commandes",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "hero": {
+      "tagline": "L'Art du Temps",
+      "headline": "Portez l'Excellence",
+      "subheadline": "Montres de luxe pour ceux qui savent que chaque seconde compte.",
+      "cta": "Découvrir la collection",
+      "scroll": "Défiler"
+    },
+    "featured": {
+      "title": "Pièces d'Exception",
+      "subtitle": "Sélection exclusive de notre collection",
+      "viewAll": "Voir tout"
+    },
+    "story": {
+      "title": "L'Histoire Ziziwatches",
+      "text": "Née d'une passion pour la précision et l'élégance, Ziziwatches crée des montres qui transcendent le temps. Chaque pièce est une œuvre d'art portée au poignet.",
+      "cta": "Notre histoire"
+    },
+    "features": {
+      "quality": "Qualité Premium",
+      "qualityDesc": "Matériaux sélectionnés avec soin",
+      "delivery": "Livraison Rapide",
+      "deliveryDesc": "Livraison dans toute l'Algérie",
+      "payment": "Paiement à la livraison",
+      "paymentDesc": "Payez en recevant votre commande",
+      "support": "Support 24/7",
+      "supportDesc": "Notre équipe est toujours disponible"
+    }
+  },
+  "shop": {
+    "title": "Notre Boutique",
+    "subtitle": "Découvrez nos montres d'exception",
+    "filters": "Filtres",
+    "sortBy": "Trier par",
+    "price": "Prix",
+    "category": "Catégorie",
+    "inStock": "En stock",
+    "allProducts": "Tous les produits",
+    "noResults": "Aucun produit trouvé",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Rupture de stock",
+    "new": "Nouveau",
+    "sale": "Soldes",
+    "from": "À partir de",
+    "sortOptions": {
+      "newest": "Plus récent",
+      "priceAsc": "Prix croissant",
+      "priceDesc": "Prix décroissant",
+      "name": "Nom A-Z"
+    }
+  },
+  "product": {
+    "addToCart": "Ajouter au panier",
+    "buyNow": "Acheter maintenant",
+    "outOfStock": "Rupture de stock",
+    "description": "Description",
+    "specifications": "Caractéristiques",
+    "recommended": "Vous aimerez aussi",
+    "share": "Partager",
+    "inStock": "En stock",
+    "sku": "Référence",
+    "category": "Catégorie"
+  },
+  "cart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide",
+    "continueShopping": "Continuer les achats",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "free": "Gratuite",
+    "total": "Total",
+    "checkout": "Passer la commande",
+    "remove": "Supprimer",
+    "quantity": "Quantité"
+  },
+  "checkout": {
+    "title": "Finaliser la commande",
+    "personalInfo": "Informations personnelles",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "email": "Email",
+    "address": "Adresse de livraison",
+    "street": "Adresse",
+    "city": "Ville",
+    "wilaya": "Wilaya",
+    "notes": "Notes (optionnel)",
+    "orderSummary": "Récapitulatif",
+    "payment": "Paiement à la livraison",
+    "paymentDesc": "Vous payez en cash lors de la réception.",
+    "placeOrder": "Confirmer la commande",
+    "placing": "Traitement...",
+    "required": "Champ obligatoire",
+    "invalidPhone": "Numéro invalide"
+  },
+  "order": {
+    "confirmed": "Commande confirmée !",
+    "confirmedDesc": "Votre commande a été passée avec succès.",
+    "orderNumber": "Numéro de commande",
+    "trackOrder": "Suivre ma commande",
+    "continueShopping": "Continuer les achats",
+    "status": {
+      "PENDING": "En attente",
+      "CONFIRMED": "Confirmée",
+      "PROCESSING": "En traitement",
+      "SHIPPED": "Expédiée",
+      "DELIVERED": "Livrée",
+      "CANCELLED": "Annulée"
+    }
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Créer un compte",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom complet",
+    "loginBtn": "Se connecter",
+    "registerBtn": "S'inscrire",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "forgotPassword": "Mot de passe oublié ?"
+  },
+  "footer": {
+    "tagline": "L'art du temps, porté avec élégance.",
+    "shop": "Boutique",
+    "legal": "Légal",
+    "privacy": "Confidentialité",
+    "terms": "CGV",
+    "contact": "Contact",
+    "followUs": "Suivez-nous",
+    "rights": "Tous droits réservés"
+  },
+  "chat": {
+    "title": "Zizi — Assistant",
+    "placeholder": "Posez votre question...",
+    "send": "Envoyer",
+    "greeting": "Bonjour ! Je suis Zizi, votre conseiller Ziziwatches. Comment puis-je vous aider ?"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "tryAgain": "Réessayer",
+    "back": "Retour",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher",
+    "currency": "DZD"
+  }
+}

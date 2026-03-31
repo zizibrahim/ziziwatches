@@ -1,0 +1,164 @@
+{
+  "nav": {
+    "shop": "Shop",
+    "collections": "Collections",
+    "about": "About",
+    "contact": "Contact",
+    "cart": "Cart",
+    "login": "Login",
+    "account": "My Account",
+    "orders": "My Orders",
+    "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "tagline": "The Art of Time",
+      "headline": "Wear Excellence",
+      "subheadline": "Luxury watches for those who know every second counts.",
+      "cta": "Discover the collection",
+      "scroll": "Scroll"
+    },
+    "featured": {
+      "title": "Exceptional Pieces",
+      "subtitle": "Exclusive selection from our collection",
+      "viewAll": "View all"
+    },
+    "story": {
+      "title": "The Ziziwatches Story",
+      "text": "Born from a passion for precision and elegance, Ziziwatches creates watches that transcend time. Each piece is a work of art worn on the wrist.",
+      "cta": "Our story"
+    },
+    "features": {
+      "quality": "Premium Quality",
+      "qualityDesc": "Carefully selected materials",
+      "delivery": "Fast Delivery",
+      "deliveryDesc": "Delivery across Algeria",
+      "payment": "Cash on Delivery",
+      "paymentDesc": "Pay when you receive your order",
+      "support": "24/7 Support",
+      "supportDesc": "Our team is always available"
+    }
+  },
+  "shop": {
+    "title": "Our Shop",
+    "subtitle": "Discover our exceptional watches",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "price": "Price",
+    "category": "Category",
+    "inStock": "In stock",
+    "allProducts": "All products",
+    "noResults": "No products found",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock",
+    "new": "New",
+    "sale": "Sale",
+    "from": "From",
+    "sortOptions": {
+      "newest": "Newest",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "name": "Name A-Z"
+    }
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "outOfStock": "Out of stock",
+    "description": "Description",
+    "specifications": "Specifications",
+    "recommended": "You might also like",
+    "share": "Share",
+    "inStock": "In stock",
+    "sku": "SKU",
+    "category": "Category"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "personalInfo": "Personal information",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Delivery address",
+    "street": "Street address",
+    "city": "City",
+    "wilaya": "Wilaya",
+    "notes": "Notes (optional)",
+    "orderSummary": "Order summary",
+    "payment": "Cash on delivery",
+    "paymentDesc": "You pay in cash upon receipt.",
+    "placeOrder": "Place order",
+    "placing": "Processing...",
+    "required": "Required field",
+    "invalidPhone": "Invalid number"
+  },
+  "order": {
+    "confirmed": "Order confirmed!",
+    "confirmedDesc": "Your order has been placed successfully.",
+    "orderNumber": "Order number",
+    "trackOrder": "Track my order",
+    "continueShopping": "Continue shopping",
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "PROCESSING": "Processing",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full name",
+    "loginBtn": "Sign in",
+    "registerBtn": "Sign up",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "forgotPassword": "Forgot password?"
+  },
+  "footer": {
+    "tagline": "The art of time, worn with elegance.",
+    "shop": "Shop",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "followUs": "Follow us",
+    "rights": "All rights reserved"
+  },
+  "chat": {
+    "title": "Zizi — Assistant",
+    "placeholder": "Ask your question...",
+    "send": "Send",
+    "greeting": "Hello! I'm Zizi, your Ziziwatches advisor. How can I help you?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "tryAgain": "Try again",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "currency": "DZD"
+  }
+}

@@ -2,26 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
+  /* ── Light mode (default) ────────────────────────────── */
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-bg:       255 255 255;
+    --color-surface:  248 246 242;
+    --color-surface2: 240 237 230;
+    --color-border:   226 219 208;
+    --color-fg:       10 10 10;
+    --gold: #c9a84c;
+  }
+
+  /* ── Dark mode ───────────────────────────────────────── */
+  .dark {
+    --color-bg:       10 10 10;
+    --color-surface:  17 17 17;
+    --color-surface2: 24 24 24;
+    --color-border:   42 42 42;
+    --color-fg:       245 240 230;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-fg));
+    font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* RTL Support */
+  [dir="rtl"] {
+    font-family: var(--font-arabic), var(--font-inter), system-ui, sans-serif;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: rgb(var(--color-bg)); }
+  ::-webkit-scrollbar-thumb { background: rgb(var(--color-border)); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #c9a84c; }
+
+  /* Selection */
+  ::selection {
+    background: rgba(201, 168, 76, 0.25);
+    color: rgb(var(--color-fg));
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .gold-text {
+    background: linear-gradient(135deg, #c9a84c 0%, #e0c06a 50%, #a88630 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Gold button: always dark text on gold bg */
+  .btn-gold {
+    @apply bg-gold text-obsidian font-semibold px-6 py-3 tracking-wide uppercase text-sm transition-all duration-300 hover:bg-gold-light active:scale-95;
+  }
+
+  .btn-outline {
+    @apply border border-gold text-gold font-semibold px-6 py-3 tracking-wide uppercase text-sm transition-all duration-300 hover:bg-gold hover:text-obsidian active:scale-95;
+  }
+
+  .card {
+    @apply bg-surface border border-border;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-12 xl:px-20;
+  }
+
+  .luxury-heading {
+    font-family: var(--font-cormorant), Georgia, serif;
+    @apply font-light tracking-wider;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--color-surface)) 25%,
+    rgb(var(--color-surface2)) 50%,
+    rgb(var(--color-surface)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

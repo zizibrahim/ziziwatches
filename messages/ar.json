@@ -1,0 +1,164 @@
+{
+  "nav": {
+    "shop": "المتجر",
+    "collections": "المجموعات",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "cart": "السلة",
+    "login": "تسجيل الدخول",
+    "account": "حسابي",
+    "orders": "طلباتي",
+    "logout": "تسجيل الخروج"
+  },
+  "home": {
+    "hero": {
+      "tagline": "فن الوقت",
+      "headline": "ارتدِ التميز",
+      "subheadline": "ساعات فاخرة لمن يعرف أن كل ثانية تُحتسب.",
+      "cta": "اكتشف المجموعة",
+      "scroll": "تمرير"
+    },
+    "featured": {
+      "title": "قطع استثنائية",
+      "subtitle": "اختيار حصري من مجموعتنا",
+      "viewAll": "عرض الكل"
+    },
+    "story": {
+      "title": "قصة زيزيووتشس",
+      "text": "وُلدت من شغف بالدقة والأناقة، تصنع زيزيووتشس ساعات تتجاوز حدود الزمن. كل قطعة هي تحفة فنية تُرتدى على المعصم.",
+      "cta": "قصتنا"
+    },
+    "features": {
+      "quality": "جودة فائقة",
+      "qualityDesc": "مواد مختارة بعناية",
+      "delivery": "توصيل سريع",
+      "deliveryDesc": "التوصيل في جميع أنحاء الجزائر",
+      "payment": "الدفع عند الاستلام",
+      "paymentDesc": "ادفع نقداً عند استلام طلبك",
+      "support": "دعم على مدار الساعة",
+      "supportDesc": "فريقنا متاح دائماً"
+    }
+  },
+  "shop": {
+    "title": "متجرنا",
+    "subtitle": "اكتشف ساعاتنا الاستثنائية",
+    "filters": "الفلاتر",
+    "sortBy": "ترتيب حسب",
+    "price": "السعر",
+    "category": "الفئة",
+    "inStock": "متوفر",
+    "allProducts": "جميع المنتجات",
+    "noResults": "لم يتم العثور على منتجات",
+    "addToCart": "أضف إلى السلة",
+    "outOfStock": "نفذ من المخزون",
+    "new": "جديد",
+    "sale": "تخفيض",
+    "from": "ابتداءً من",
+    "sortOptions": {
+      "newest": "الأحدث",
+      "priceAsc": "السعر: من الأقل للأعلى",
+      "priceDesc": "السعر: من الأعلى للأقل",
+      "name": "الاسم أ-ي"
+    }
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "buyNow": "اشتر الآن",
+    "outOfStock": "نفذ من المخزون",
+    "description": "الوصف",
+    "specifications": "المواصفات",
+    "recommended": "قد يعجبك أيضاً",
+    "share": "مشاركة",
+    "inStock": "متوفر",
+    "sku": "الرمز",
+    "category": "الفئة"
+  },
+  "cart": {
+    "title": "السلة",
+    "empty": "سلتك فارغة",
+    "continueShopping": "مواصلة التسوق",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "free": "مجاني",
+    "total": "المجموع",
+    "checkout": "إتمام الشراء",
+    "remove": "حذف",
+    "quantity": "الكمية"
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "personalInfo": "المعلومات الشخصية",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "address": "عنوان التوصيل",
+    "street": "العنوان",
+    "city": "المدينة",
+    "wilaya": "الولاية",
+    "notes": "ملاحظات (اختياري)",
+    "orderSummary": "ملخص الطلب",
+    "payment": "الدفع عند الاستلام",
+    "paymentDesc": "تدفع نقداً عند استلام طلبك.",
+    "placeOrder": "تأكيد الطلب",
+    "placing": "جاري المعالجة...",
+    "required": "حقل مطلوب",
+    "invalidPhone": "رقم غير صالح"
+  },
+  "order": {
+    "confirmed": "تم تأكيد الطلب!",
+    "confirmedDesc": "تم تقديم طلبك بنجاح.",
+    "orderNumber": "رقم الطلب",
+    "trackOrder": "تتبع طلبي",
+    "continueShopping": "مواصلة التسوق",
+    "status": {
+      "PENDING": "قيد الانتظار",
+      "CONFIRMED": "مؤكد",
+      "PROCESSING": "قيد المعالجة",
+      "SHIPPED": "تم الشحن",
+      "DELIVERED": "تم التوصيل",
+      "CANCELLED": "ملغى"
+    }
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "الاسم الكامل",
+    "loginBtn": "دخول",
+    "registerBtn": "إنشاء",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "forgotPassword": "نسيت كلمة المرور؟"
+  },
+  "footer": {
+    "tagline": "فن الوقت، يُرتدى بأناقة.",
+    "shop": "المتجر",
+    "legal": "القانوني",
+    "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "contact": "اتصل بنا",
+    "followUs": "تابعنا",
+    "rights": "جميع الحقوق محفوظة"
+  },
+  "chat": {
+    "title": "زيزي — المساعد",
+    "placeholder": "اطرح سؤالك...",
+    "send": "إرسال",
+    "greeting": "مرحباً! أنا زيزي، مستشارك في زيزيووتشس. كيف يمكنني مساعدتك؟"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "back": "رجوع",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "search": "بحث",
+    "currency": "دج"
+  }
+}
