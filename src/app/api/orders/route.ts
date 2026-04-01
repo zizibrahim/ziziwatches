@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateOrderNumber } from "@/lib/utils";
+import { sendOrderConfirmation } from "@/lib/email";
 import { z } from "zod";
 
 const OrderSchema = z.object({
@@ -81,6 +82,19 @@ export async function POST(req: NextRequest) {
       },
       include: { items: true },
     });
+
+    // Send confirmation email (non-blocking)
+    if (data.email) {
+      sendOrderConfirmation({
+        orderNumber: order.orderNumber,
+        customerName: `${data.firstName} ${data.lastName}`,
+        customerEmail: data.email,
+        items: orderItems.map((i) => ({ name: i.productName, quantity: i.quantity, price: i.total })),
+        total,
+        address: `${data.street}, ${data.city}, ${data.wilaya}`,
+        locale: data.locale,
+      }).catch(console.error);
+    }
 
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
