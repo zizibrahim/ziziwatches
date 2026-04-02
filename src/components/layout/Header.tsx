@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
 import { useCartStore } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
 
 export default function Header() {
   const t = useTranslations("nav");
@@ -15,6 +16,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { items } = useCartStore();
+  const { items: wishlist } = useWishlistStore();
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
@@ -60,14 +62,27 @@ export default function Header() {
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-4 lg:gap-6">
+            <div className="flex items-center gap-4 lg:gap-5">
               <LanguageSwitcher />
               <ThemeToggle />
+
+              {/* Wishlist */}
+              <Link
+                href={`/${locale}/wishlist`}
+                className="relative hidden lg:flex text-foreground/80 hover:text-gold transition-colors"
+              >
+                <Heart size={20} strokeWidth={1.5} />
+                {wishlist.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-gold text-obsidian text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
 
               {/* Cart */}
               <Link
                 href={`/${locale}/cart`}
-                className="relative text-foreground/80 hover:text-gold transition-colors duration-300"
+                className="relative text-foreground/80 hover:text-gold transition-colors"
               >
                 <ShoppingBag size={20} strokeWidth={1.5} />
                 {cartCount > 0 && (
@@ -105,6 +120,7 @@ export default function Header() {
             >
               <X size={24} />
             </button>
+
             {navLinks.map((link) => (
               <Link
                 key={link.href + link.label}
@@ -115,6 +131,23 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+
+            <Link
+              href={`/${locale}/wishlist`}
+              onClick={() => setMenuOpen(false)}
+              className="luxury-heading text-3xl font-light tracking-[0.3em] uppercase text-foreground/80 hover:text-gold transition-colors"
+            >
+              Wishlist {wishlist.length > 0 && `(${wishlist.length})`}
+            </Link>
+
+            <Link
+              href={`/${locale}/cart`}
+              onClick={() => setMenuOpen(false)}
+              className="luxury-heading text-3xl font-light tracking-[0.3em] uppercase text-foreground/80 hover:text-gold transition-colors"
+            >
+              {t("cart")} {cartCount > 0 && `(${cartCount})`}
+            </Link>
+
             <div className="mt-4">
               <LanguageSwitcher />
             </div>

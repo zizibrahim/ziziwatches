@@ -1,12 +1,12 @@
 import Link from "next/link";
+import SessionProvider from "@/components/layout/SessionProvider";
+import AdminLogout from "@/components/admin/AdminLogout";
 import {
   LayoutDashboard,
   ShoppingBag,
   Package,
   Users,
-  BarChart3,
   Briefcase,
-  Settings,
   LogOut,
 } from "lucide-react";
 
@@ -15,9 +15,7 @@ const navItems = [
   { href: "orders", label: "Commandes", icon: ShoppingBag },
   { href: "products", label: "Produits", icon: Package },
   { href: "customers", label: "Clients", icon: Users },
-  { href: "analytics", label: "Analytics", icon: BarChart3 },
   { href: "projects", label: "Projets", icon: Briefcase },
-  { href: "settings", label: "Paramètres", icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -28,6 +26,7 @@ export default function AdminLayout({
   params: { locale: string };
 }) {
   return (
+    <SessionProvider>
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <aside className="w-56 shrink-0 bg-surface border-r border-border flex flex-col">
@@ -65,7 +64,7 @@ export default function AdminLayout({
         </nav>
 
         {/* Footer */}
-        <div className="px-3 py-4 border-t border-border">
+        <div className="px-3 py-4 border-t border-border space-y-1">
           <Link
             href={`/${params.locale}`}
             className="flex items-center gap-3 px-3 py-2 text-xs text-foreground/30 hover:text-foreground/60 transition-colors"
@@ -73,6 +72,7 @@ export default function AdminLayout({
             <LogOut size={14} />
             Voir la boutique
           </Link>
+          <AdminLogout locale={params.locale} />
         </div>
       </aside>
 
@@ -81,5 +81,6 @@ export default function AdminLayout({
         {children}
       </div>
     </div>
+    </SessionProvider>
   );
 }

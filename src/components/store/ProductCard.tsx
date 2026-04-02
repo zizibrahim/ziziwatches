@@ -4,9 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Heart } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore, type CartProduct } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
 
 interface Product {
   id: string;
@@ -26,6 +27,8 @@ export default function ProductCard({ product }: { product: Product }) {
   const t = useTranslations("shop");
   const locale = useLocale();
   const addItem = useCartStore((s) => s.addItem);
+  const { toggle, isWished } = useWishlistStore();
+  const wished = isWished(product.id);
 
   const name =
     locale === "en" ? product.nameEn : locale === "ar" ? product.nameAr : product.nameFr;
@@ -67,6 +70,14 @@ export default function ProductCard({ product }: { product: Product }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <div className="absolute inset-0 bg-background/10 group-hover:bg-background/30 transition-colors duration-300" />
+
+          {/* Wishlist */}
+          <button
+            onClick={(e) => { e.preventDefault(); toggle({ id: product.id, slug: product.slug, nameFr: product.nameFr, nameEn: product.nameEn, nameAr: product.nameAr, price: product.price, image, sku: product.sku }); }}
+            className="absolute top-3 ltr:right-3 rtl:left-3 w-8 h-8 bg-background/70 backdrop-blur flex items-center justify-center transition-colors hover:bg-background z-10"
+          >
+            <Heart size={13} className={wished ? "text-red-400 fill-red-400" : "text-foreground/60"} />
+          </button>
 
           {/* Badges */}
           <div className="absolute top-3 ltr:left-3 rtl:right-3 flex gap-2">

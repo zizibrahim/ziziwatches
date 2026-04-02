@@ -6,7 +6,6 @@ import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Eye, EyeOff } from "lucide-react";
-import Header from "@/components/layout/Header";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -31,15 +30,14 @@ export default function LoginPage() {
     if (res?.error) {
       setError("Email ou mot de passe incorrect.");
     } else {
-      router.push(`/${locale}`);
+      router.push(`/${locale}/admin`);
       router.refresh();
     }
   };
 
   return (
     <>
-      <Header />
-      <main className="min-h-screen pt-24 flex items-center justify-center section-padding">
+      <main className="min-h-screen flex items-center justify-center section-padding bg-background">
         <div className="w-full max-w-sm">
           {/* Brand */}
           <div className="text-center mb-10">
@@ -103,15 +101,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="text-center text-foreground/40 text-xs mt-6">
-            {t("noAccount")}{" "}
-            <Link
-              href={`/${locale}/auth/register`}
-              className="text-gold hover:text-gold-light transition-colors"
-            >
-              {t("register")}
-            </Link>
-          </p>
         </div>
       </main>
     </>
