@@ -3,6 +3,7 @@ import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import AddProductModal from "@/components/admin/AddProductModal";
 import ProductActions from "@/components/admin/ProductActions";
+import EditProductModal from "@/components/admin/EditProductModal";
 
 export const dynamic = "force-dynamic";
 
@@ -68,7 +69,30 @@ export default async function AdminProductsPage() {
               </div>
 
               {/* Actions */}
-              <ProductActions productId={product.id} currentStatus={product.status} featured={product.featured} />
+              <div className="flex items-center gap-1">
+                <EditProductModal
+                  product={{
+                    id: product.id,
+                    nameFr: product.nameFr,
+                    nameEn: product.nameEn ?? "",
+                    nameAr: product.nameAr ?? "",
+                    descriptionFr: product.descriptionFr ?? "",
+                    descriptionEn: product.descriptionEn ?? "",
+                    descriptionAr: product.descriptionAr ?? "",
+                    price: product.price,
+                    compareAtPrice: product.compareAtPrice,
+                    coffretPrice: product.coffretPrice,
+                    stock: product.stock,
+                    categoryId: product.categoryId,
+                    status: product.status,
+                    featured: product.featured,
+                    isNew: product.isNew,
+                    imageUrl: product.images[0]?.url ?? null,
+                  }}
+                  categories={categories}
+                />
+                <ProductActions productId={product.id} currentStatus={product.status} featured={product.featured} />
+              </div>
             </div>
           );
         })}

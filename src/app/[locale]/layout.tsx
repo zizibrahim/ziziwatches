@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n";
 import ChatWidget from "@/components/ai/ChatWidget";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import PageTransition from "@/components/layout/PageTransition";
 import "../globals.css";
 
 const inter = Inter({
@@ -69,7 +70,7 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
-            {children}
+            <PageTransition>{children}</PageTransition>
             <ChatWidget />
           </ThemeProvider>
         </NextIntlClientProvider>

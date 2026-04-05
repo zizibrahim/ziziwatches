@@ -93,6 +93,7 @@ model Product {
   featured         Boolean  @default(false)
   isNew            Boolean  @default(false)
   brand            String   @default("Ziziwatches")
+  coffretPrice     Float?   // if set, customer can upgrade to gift box for this extra price
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -180,16 +181,18 @@ model Order {
 }
 
 model OrderItem {
-  id          String  @id @default(cuid())
-  orderId     String
-  productId   String
-  productName String
-  productSku  String
-  quantity    Int
-  unitPrice   Float
-  total       Float
-  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product     Product @relation(fields: [productId], references: [id])
+  id              String  @id @default(cuid())
+  orderId         String
+  productId       String
+  productName     String
+  productSku      String
+  quantity        Int
+  unitPrice       Float
+  total           Float
+  packaging       String  @default("simple") // "simple" | "coffret"
+  packagingPrice  Float   @default(0)
+  order           Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product         Product @relation(fields: [productId], references: [id])
 
   @@map("order_items")
 }

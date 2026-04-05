@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, Sparkles, Loader2 } from "lucide-react";
+import { X, Pencil, Sparkles, Loader2 } from "lucide-react";
 import ImageUpload from "./ImageUpload";
 
 interface Category {
@@ -10,7 +10,32 @@ interface Category {
   nameFr: string;
 }
 
-export default function AddProductModal({ categories }: { categories: Category[] }) {
+interface Product {
+  id: string;
+  nameFr: string;
+  nameEn: string;
+  nameAr: string;
+  descriptionFr: string;
+  descriptionEn: string;
+  descriptionAr: string;
+  price: number;
+  compareAtPrice: number | null;
+  coffretPrice: number | null;
+  stock: number;
+  categoryId: string;
+  status: string;
+  featured: boolean;
+  isNew: boolean;
+  imageUrl?: string | null;
+}
+
+export default function EditProductModal({
+  product,
+  categories,
+}: {
+  product: Product;
+  categories: Category[];
+}) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
@@ -18,12 +43,21 @@ export default function AddProductModal({ categories }: { categories: Category[]
   const router = useRouter();
 
   const [form, setForm] = useState({
-    nameFr: "", nameEn: "", nameAr: "",
-    descriptionFr: "", descriptionEn: "", descriptionAr: "",
-    price: "", compareAtPrice: "", stock: "0",
-    categoryId: categories[0]?.id ?? "",
-    imageUrl: "", featured: false, isNew: false,
-    status: "ACTIVE", coffretPrice: "",
+    nameFr: product.nameFr,
+    nameEn: product.nameEn,
+    nameAr: product.nameAr,
+    descriptionFr: product.descriptionFr,
+    descriptionEn: product.descriptionEn,
+    descriptionAr: product.descriptionAr,
+    price: String(product.price),
+    compareAtPrice: product.compareAtPrice ? String(product.compareAtPrice) : "",
+    coffretPrice: product.coffretPrice ? String(product.coffretPrice) : "",
+    stock: String(product.stock),
+    categoryId: product.categoryId,
+    status: product.status,
+    featured: product.featured,
+    isNew: product.isNew,
+    imageUrl: product.imageUrl ?? "",
   });
 
   const set = (k: string, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
@@ -47,7 +81,6 @@ export default function AddProductModal({ categories }: { categories: Category[]
         descriptionFr: data.descriptionFr ?? f.descriptionFr,
         descriptionEn: data.descriptionEn ?? f.descriptionEn,
         descriptionAr: data.descriptionAr ?? f.descriptionAr,
-        nameAr: f.nameAr || (data.nameAr ?? f.nameAr),
       }));
     } catch {
       setError("Erreur IA. Vérifiez votre GEMINI_API_KEY.");
@@ -59,20 +92,29 @@ export default function AddProductModal({ categories }: { categories: Category[]
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(""); setLoading(true);
-    const res = await fetch("/api/admin/products", {
-      method: "POST",
+    const res = await fetch(`/api/admin/products/${product.id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...form,
+        nameFr: form.nameFr,
+        nameEn: form.nameEn,
+        nameAr: form.nameAr,
+        descriptionFr: form.descriptionFr,
+        descriptionEn: form.descriptionEn,
+        descriptionAr: form.descriptionAr,
         price: parseFloat(form.price),
         compareAtPrice: form.compareAtPrice ? parseFloat(form.compareAtPrice) : null,
         coffretPrice: form.coffretPrice ? parseFloat(form.coffretPrice) : null,
         stock: parseInt(form.stock),
+        categoryId: form.categoryId,
+        status: form.status,
+        featured: form.featured,
+        isNew: form.isNew,
         imageUrl: form.imageUrl || null,
       }),
     });
     setLoading(false);
-    if (!res.ok) { setError("Erreur lors de la création."); return; }
+    if (!res.ok) { setError("Erreur lors de la modification."); return; }
     setOpen(false);
     router.refresh();
   };
@@ -82,8 +124,12 @@ export default function AddProductModal({ categories }: { categories: Category[]
 
   return (
     <>
-      <button onClick={() => setOpen(true)} className="btn-gold text-sm px-4 py-2">
-        + Ajouter un produit
+      <button
+        onClick={() => setOpen(true)}
+        title="Modifier"
+        className="p-1.5 text-foreground/30 hover:text-gold transition-colors"
+      >
+        <Pencil size={14} />
       </button>
 
       {open && (
@@ -91,7 +137,7 @@ export default function AddProductModal({ categories }: { categories: Category[]
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <div className="relative bg-background border border-border w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="luxury-heading text-xl font-light text-foreground">Nouveau produit</h2>
+              <h2 className="luxury-heading text-xl font-light text-foreground">Modifier le produit</h2>
               <button onClick={() => setOpen(false)} className="text-foreground/40 hover:text-foreground">
                 <X size={18} />
               </button>
@@ -99,10 +145,10 @@ export default function AddProductModal({ categories }: { categories: Category[]
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-3 gap-3">
-                {[["nameFr", "Nom (FR)"], ["nameEn", "Nom (EN)"], ["nameAr", "Nom (AR)"]].map(([k, l]) => (
+                {[["nameFr", "Nom (FR)"], ["nameEn", "Nom (EN)"], ["nameAr", "Nom (AR)"]] .map(([k, l]) => (
                   <div key={k}>
                     <label className={labelClass}>{l}</label>
-                    <input required={k !== "nameAr"} value={form[k as keyof typeof form] as string} onChange={(e) => set(k, e.target.value)} className={inputClass} />
+                    <input required value={form[k as keyof typeof form] as string} onChange={(e) => set(k, e.target.value)} className={inputClass} />
                   </div>
                 ))}
               </div>
@@ -117,7 +163,7 @@ export default function AddProductModal({ categories }: { categories: Category[]
                   className="flex items-center gap-1.5 text-xs text-gold border border-gold/30 px-3 py-1.5 hover:bg-gold/5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   {aiLoading ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
-                  {aiLoading ? "Génération..." : "Générer avec l'IA"}
+                  {aiLoading ? "Génération..." : "Regénérer avec l'IA"}
                 </button>
               </div>
 
@@ -186,7 +232,7 @@ export default function AddProductModal({ categories }: { categories: Category[]
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setOpen(false)} className="btn-outline flex-1">Annuler</button>
                 <button type="submit" disabled={loading} className="btn-gold flex-1 disabled:opacity-60">
-                  {loading ? "Création..." : "Créer le produit"}
+                  {loading ? "Enregistrement..." : "Enregistrer"}
                 </button>
               </div>
             </form>

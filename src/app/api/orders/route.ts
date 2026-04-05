@@ -18,6 +18,7 @@ const OrderSchema = z.object({
     z.object({
       productId: z.string(),
       quantity: z.number().min(1),
+      packaging: z.enum(["simple", "coffret"]).default("simple"),
     })
   ).min(1),
 });
@@ -42,13 +43,18 @@ export async function POST(req: NextRequest) {
 
     const orderItems = data.items.map((item) => {
       const product = products.find((p) => p.id === item.productId)!;
+      const packagingPrice =
+        item.packaging === "coffret" ? (product.coffretPrice ?? 0) : 0;
+      const unitPrice = product.price + packagingPrice;
       return {
         productId: item.productId,
         productName: product.nameFr,
         productSku: product.sku,
         quantity: item.quantity,
-        unitPrice: product.price,
-        total: product.price * item.quantity,
+        unitPrice,
+        total: unitPrice * item.quantity,
+        packaging: item.packaging,
+        packagingPrice,
       };
     });
 

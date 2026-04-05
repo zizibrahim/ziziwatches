@@ -1,5 +1,16 @@
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
+
+export const metadata: Metadata = {
+  title: "Ziziwatches — L'Art du Temps",
+  description: "Montres de luxe pour ceux qui savent que chaque seconde compte. Livraison partout en Algérie.",
+  openGraph: {
+    title: "Ziziwatches — L'Art du Temps",
+    description: "Montres de luxe pour ceux qui savent que chaque seconde compte.",
+    type: "website",
+  },
+};
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import BrandFeatures from "@/components/home/BrandFeatures";
 import Header from "@/components/layout/Header";

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { Trash2, ArrowRight } from "lucide-react";
+import { Trash2, ArrowRight, Package, Gift } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useCartStore } from "@/store/cartStore";
@@ -47,16 +47,17 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             {/* Items */}
             <div className="lg:col-span-2 space-y-4">
-              {items.map(({ product, quantity }) => {
+              {items.map(({ product, quantity, packaging, packagingPrice }) => {
                 const name =
                   locale === "en"
                     ? product.nameEn
                     : locale === "ar"
                     ? product.nameAr
                     : product.nameFr;
+                const unitTotal = (product.price + packagingPrice) * quantity;
                 return (
                   <div
-                    key={product.id}
+                    key={`${product.id}__${packaging}`}
                     className="flex gap-4 p-4 bg-surface border border-border"
                   >
                     <div className="relative w-20 h-20 shrink-0 bg-background overflow-hidden">
@@ -72,14 +73,19 @@ export default function CartPage() {
                       <h3 className="luxury-heading text-base font-light text-foreground truncate">
                         {name}
                       </h3>
-                      <p className="text-foreground/40 text-xs mt-1 font-mono">
-                        {product.sku}
-                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <p className="text-foreground/40 text-xs font-mono">{product.sku}</p>
+                        <span className="flex items-center gap-1 text-[10px] text-foreground/40">
+                          {packaging === "coffret"
+                            ? <><Gift size={10} className="text-gold" /> Avec coffret</>
+                            : <><Package size={10} /> Boîte simple</>}
+                        </span>
+                      </div>
                       <div className="flex items-center justify-between mt-3">
                         {/* Qty */}
                         <div className="flex items-center border border-border">
                           <button
-                            onClick={() => updateQuantity(product.id, quantity - 1)}
+                            onClick={() => updateQuantity(product.id, quantity - 1, packaging)}
                             className="w-7 h-7 text-foreground/60 hover:text-gold text-lg"
                           >
                             −
@@ -88,7 +94,7 @@ export default function CartPage() {
                             {quantity}
                           </span>
                           <button
-                            onClick={() => updateQuantity(product.id, quantity + 1)}
+                            onClick={() => updateQuantity(product.id, quantity + 1, packaging)}
                             className="w-7 h-7 text-foreground/60 hover:text-gold text-lg"
                           >
                             +
@@ -96,10 +102,10 @@ export default function CartPage() {
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="text-gold font-medium text-sm">
-                            {formatPrice(product.price * quantity)}
+                            {formatPrice(unitTotal)}
                           </span>
                           <button
-                            onClick={() => removeItem(product.id)}
+                            onClick={() => removeItem(product.id, packaging)}
                             className="text-foreground/30 hover:text-red-400 transition-colors"
                           >
                             <Trash2 size={14} />

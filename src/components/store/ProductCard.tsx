@@ -93,8 +93,8 @@ export default function ProductCard({ product }: { product: Product }) {
             )}
           </div>
 
-          {/* Add to cart hover */}
-          <div className="absolute inset-x-3 bottom-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+          {/* Add to cart — always visible on touch, hover-revealed on desktop */}
+          <div className="absolute inset-x-3 bottom-3 lg:translate-y-4 lg:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
             <button
               onClick={handleAddToCart}
               disabled={!inStock}

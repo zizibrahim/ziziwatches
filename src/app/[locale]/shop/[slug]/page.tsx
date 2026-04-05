@@ -1,14 +1,58 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AddToCartButton from "@/components/store/AddToCartButton";
+import ProductGallery from "@/components/store/ProductGallery";
+import AIRecommendations from "@/components/store/AIRecommendations";
 import { getTranslations } from "next-intl/server";
 import { formatPrice } from "@/lib/utils";
+import type { Metadata } from "next";
 
 interface ProductPageProps {
   params: { locale: string; slug: string };
+}
+
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const product = await prisma.product.findUnique({
+    where: { slug: params.slug },
+    select: {
+      nameFr: true, nameEn: true, nameAr: true,
+      descriptionFr: true, descriptionEn: true,
+      seoTitleFr: true, seoTitleEn: true,
+      seoDescriptionFr: true, seoDescriptionEn: true,
+      images: { take: 1, select: { url: true } },
+      price: true,
+    },
+  });
+
+  if (!product) return {};
+
+  const name = params.locale === "en" ? product.nameEn : params.locale === "ar" ? product.nameAr : product.nameFr;
+  const description = params.locale === "en"
+    ? (product.seoDescriptionEn ?? product.descriptionEn)
+    : (product.seoDescriptionFr ?? product.descriptionFr);
+  const title = params.locale === "en"
+    ? (product.seoTitleEn ?? product.nameEn)
+    : (product.seoTitleFr ?? product.nameFr);
+  const image = product.images[0]?.url;
+
+  return {
+    title,
+    description: description.slice(0, 160),
+    openGraph: {
+      title: `${name} — Ziziwatches`,
+      description: description.slice(0, 160),
+      images: image ? [{ url: image, width: 800, height: 800, alt: name }] : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} — Ziziwatches`,
+      description: description.slice(0, 160),
+      images: image ? [image] : [],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -64,37 +108,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="section-padding py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 max-w-6xl mx-auto">
             {/* Images */}
-            <div className="space-y-3">
-              {/* Main image */}
-              <div className="relative aspect-square bg-surface overflow-hidden">
-                {product.images[0] && (
-                  <Image
-                    src={product.images[0].url}
-                    alt={product.images[0].altFr ?? name}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                )}
-              </div>
-              {/* Thumbnails */}
-              {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {product.images.slice(1).map((img, i) => (
-                    <div key={i} className="relative aspect-square bg-surface overflow-hidden">
-                      <Image
-                        src={img.url}
-                        alt={img.altFr ?? name}
-                        fill
-                        className="object-cover"
-                        sizes="25vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ProductGallery images={product.images} productName={name} />
 
             {/* Product Info */}
             <div className="flex flex-col">
@@ -152,6 +166,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   price: product.price,
                   image: product.images[0]?.url ?? "",
                   sku: product.sku,
+                  coffretPrice: product.coffretPrice,
                 }}
                 inStock={product.stock > 0}
               />
@@ -192,49 +207,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          {/* Recommended */}
-          {recommended.length > 0 && (
-            <div className="mt-20 max-w-6xl mx-auto">
-              <h2 className="luxury-heading text-2xl font-light text-foreground mb-8">
-                {t("recommended")}
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
-                {recommended.map((p) => {
-                  const pName =
-                    params.locale === "en"
-                      ? p.nameEn
-                      : params.locale === "ar"
-                      ? p.nameAr
-                      : p.nameFr;
-                  return (
-                    <a
-                      key={p.id}
-                      href={`/${params.locale}/shop/${p.slug}`}
-                      className="group block"
-                    >
-                      <div className="relative aspect-square bg-surface overflow-hidden">
-                        {p.images[0] && (
-                          <Image
-                            src={p.images[0].url}
-                            alt={pName}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            sizes="33vw"
-                          />
-                        )}
-                      </div>
-                      <div className="pt-3">
-                        <p className="text-foreground/80 text-sm group-hover:text-gold transition-colors luxury-heading">
-                          {pName}
-                        </p>
-                        <p className="text-gold text-xs mt-1">{formatPrice(p.price)}</p>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Recommended — AI-powered, falls back to same-category */}
+          <AIRecommendations
+            productId={product.id}
+            locale={params.locale}
+            fallback={recommended}
+          />
         </div>
       </main>
       <Footer />

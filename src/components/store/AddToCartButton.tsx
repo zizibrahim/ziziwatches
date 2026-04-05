@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { ShoppingBag, Check } from "lucide-react";
+import { ShoppingBag, Check, Package, Gift } from "lucide-react";
 import { useCartStore, type CartProduct } from "@/store/cartStore";
+import { formatPrice } from "@/lib/utils";
 
 interface AddToCartButtonProps {
   product: CartProduct;
@@ -15,16 +16,58 @@ export default function AddToCartButton({ product, inStock }: AddToCartButtonPro
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
   const [qty, setQty] = useState(1);
+  const [packaging, setPackaging] = useState<"simple" | "coffret">("simple");
+
+  const hasCoffret = !!product.coffretPrice;
 
   const handleAdd = () => {
     if (!inStock) return;
-    addItem(product, qty);
+    addItem(product, qty, packaging);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
   return (
     <div className="space-y-4">
+      {/* Packaging selector */}
+      {hasCoffret && (
+        <div className="space-y-2">
+          <span className="text-foreground/40 text-xs uppercase tracking-wider">Présentation</span>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setPackaging("simple")}
+              className={`flex items-center gap-2.5 border p-3 text-left transition-colors ${
+                packaging === "simple"
+                  ? "border-gold bg-gold/5 text-foreground"
+                  : "border-border text-foreground/50 hover:border-gold/30"
+              }`}
+            >
+              <Package size={15} className={packaging === "simple" ? "text-gold" : ""} />
+              <div>
+                <p className="text-xs font-medium">Boîte simple</p>
+                <p className="text-[10px] text-foreground/40">Inclus</p>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setPackaging("coffret")}
+              className={`flex items-center gap-2.5 border p-3 text-left transition-colors ${
+                packaging === "coffret"
+                  ? "border-gold bg-gold/5 text-foreground"
+                  : "border-border text-foreground/50 hover:border-gold/30"
+              }`}
+            >
+              <Gift size={15} className={packaging === "coffret" ? "text-gold" : ""} />
+              <div>
+                <p className="text-xs font-medium">Avec coffret</p>
+                <p className="text-[10px] text-gold">+{formatPrice(product.coffretPrice!)}</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Quantity */}
       <div className="flex items-center gap-4">
         <span className="text-foreground/40 text-xs uppercase tracking-wider">Qté</span>

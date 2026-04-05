@@ -66,6 +66,7 @@ export default function CheckoutPage() {
           items: items.map((item) => ({
             productId: item.product.id,
             quantity: item.quantity,
+            packaging: item.packaging,
           })),
         }),
       });
@@ -152,7 +153,7 @@ export default function CheckoutPage() {
                 <h2 className="text-gold text-xs tracking-[0.2em] uppercase font-medium mb-4">
                   {t("personalInfo")}
                 </h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <input
                       {...register("firstName")}
@@ -211,7 +212,7 @@ export default function CheckoutPage() {
                       <p className="text-red-400 text-xs mt-1">{errors.street.message}</p>
                     )}
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <input
                         {...register("city")}
