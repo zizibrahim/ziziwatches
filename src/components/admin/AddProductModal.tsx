@@ -132,7 +132,7 @@ export default function AddProductModal({ categories }: { categories: Category[]
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className={labelClass}>Prix (DZD)</label>
+                  <label className={labelClass}>Prix (MAD)</label>
                   <input required type="number" min="0" value={form.price} onChange={(e) => set("price", e.target.value)} className={inputClass} />
                 </div>
                 <div>
@@ -144,7 +144,7 @@ export default function AddProductModal({ categories }: { categories: Category[]
                   <input required type="number" min="0" value={form.stock} onChange={(e) => set("stock", e.target.value)} className={inputClass} />
                 </div>
                 <div>
-                  <label className={labelClass}>Prix coffret (+DZD)</label>
+                  <label className={labelClass}>Prix coffret (+MAD)</label>
                   <input type="number" min="0" value={form.coffretPrice} onChange={(e) => set("coffretPrice", e.target.value)} className={inputClass} placeholder="Laisser vide si non" />
                 </div>
               </div>

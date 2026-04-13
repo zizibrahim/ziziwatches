@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import ProductCard from "@/components/store/ProductCard";
+import ProductDiamondGrid from "@/components/store/ProductDiamondGrid";
+import FilmStrip from "@/components/store/FilmStrip";
 import SearchBar from "@/components/store/SearchBar";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
@@ -48,7 +49,10 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
       where,
-      include: { images: { orderBy: { position: "asc" }, take: 1 } },
+      include: {
+        images: { orderBy: { position: "asc" }, take: 1 },
+        category: { select: { nameFr: true, nameEn: true, nameAr: true } },
+      },
       orderBy,
     }),
     prisma.category.findMany({ orderBy: { nameEn: "asc" } }),
@@ -142,13 +146,25 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <>
+              <p className="text-center text-gold text-[11px] tracking-[0.35em] uppercase mb-4 font-light">
+                — {products.length} pièces —
+              </p>
+              {/* Diamond grid */}
+              <ProductDiamondGrid products={products} />
+            </>
           )}
         </div>
+
+        {/* Film strip — full width, below the grid */}
+        {products.length > 0 && (
+          <div className="mt-8">
+            <div className="section-padding mb-6">
+              <p className="text-gold/50 text-[10px] tracking-[0.4em] uppercase">Défilement — Collection</p>
+            </div>
+            <FilmStrip products={products} />
+          </div>
+        )}
       </main>
       <Footer />
     </>

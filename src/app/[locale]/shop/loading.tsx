@@ -14,16 +14,21 @@ export default function ShopLoading() {
         <div className="h-10 w-36 bg-foreground/10 rounded animate-pulse" />
       </div>
 
-      {/* Product grid skeleton */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="bg-surface border border-border animate-pulse">
-            <div className="aspect-square bg-foreground/10" />
-            <div className="p-4 space-y-3">
-              <div className="h-3 w-16 bg-foreground/10 rounded" />
-              <div className="h-4 w-full bg-foreground/10 rounded" />
-              <div className="h-3 w-3/4 bg-foreground/10 rounded" />
-              <div className="h-5 w-24 bg-foreground/10 rounded mt-2" />
+      {/* Piece count skeleton */}
+      <div className="flex justify-center mb-10">
+        <div className="h-3 w-24 bg-foreground/10 rounded animate-pulse" />
+      </div>
+
+      {/* Product grid skeleton — 2/3 aspect, editorial spacing */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="animate-pulse">
+            <div className="aspect-[2/3] bg-foreground/10" />
+            <div className="pt-3 pb-1 space-y-2.5">
+              <div className="h-2 w-16 bg-foreground/8 rounded" />
+              <div className="h-5 w-3/4 bg-foreground/10 rounded" />
+              <div className="h-px w-full bg-foreground/8" />
+              <div className="h-4 w-20 bg-foreground/10 rounded" />
             </div>
           </div>
         ))}

@@ -68,6 +68,7 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body>
+        <div className="grain" aria-hidden="true" />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
             <PageTransition>{children}</PageTransition>

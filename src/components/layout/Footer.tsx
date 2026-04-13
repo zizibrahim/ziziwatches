@@ -108,7 +108,7 @@ export default function Footer() {
           <p className="text-foreground/30 text-xs tracking-wider">
             © {new Date().getFullYear()} Ziziwatches. {t("rights")}.
           </p>
-          <p className="text-foreground/20 text-xs">Algérie</p>
+          <p className="text-foreground/20 text-xs">Maroc</p>
         </div>
       </div>
     </footer>

@@ -74,7 +74,7 @@ export async function generateRecommendations(params: {
   const prompt = `You are a luxury watch advisor for Ziziwatches. A customer is viewing "${params.currentProduct.name}" (${params.currentProduct.category}).
 
 Available products to recommend:
-${params.availableProducts.map((p) => `- ID: ${p.id}, Name: ${p.name}, Category: ${p.category}, Price: ${p.price} DZD`).join("\n")}
+${params.availableProducts.map((p) => `- ID: ${p.id}, Name: ${p.name}, Category: ${p.category}, Price: ${p.price} MAD`).join("\n")}
 
 Return ONLY a valid JSON object:
 {"recommendedIds": ["id1", "id2", "id3"]}

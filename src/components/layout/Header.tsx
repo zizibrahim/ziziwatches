@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { ShoppingBag, Menu, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,9 +44,16 @@ export default function Header() {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href={`/${locale}`} className="flex items-center">
-              <span className="luxury-heading text-xl lg:text-2xl font-light tracking-[0.3em] uppercase text-foreground">
-                ZIZI<span className="gold-text">WATCHES</span>
-              </span>
+              <Image
+                src="/logo.png"
+                alt="Ziziwatches"
+                width={220}
+                height={80}
+                className={`h-20 w-auto object-contain transition-all duration-300 brightness-0 ${
+                  scrolled ? "dark:invert" : "invert"
+                }`}
+                priority
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -112,7 +120,7 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8 px-8"
           >
             <button
               className="absolute top-5 right-5 text-foreground/60 hover:text-foreground"

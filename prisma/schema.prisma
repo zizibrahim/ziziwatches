@@ -80,10 +80,10 @@ model Product {
   seoDescriptionAr String?
   price            Float
   compareAtPrice   Float?
-  currency         String   @default("DZD")
+  currency         String   @default("MAD")
   stock            Int      @default(0)
-  categoryId       String
-  category         Category @relation(fields: [categoryId], references: [id])
+  categoryId       String?
+  category         Category? @relation(fields: [categoryId], references: [id])
   images           ProductImage[]
   attributes       ProductAttribute[]
   tags             ProductTag[]
@@ -165,7 +165,7 @@ model Order {
   shippingCost    Float    @default(0)
   discount        Float    @default(0)
   total           Float
-  currency        String   @default("DZD")
+  currency        String   @default("MAD")
   addressId       String?
   shippingAddress String
   notes           String?

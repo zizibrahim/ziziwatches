@@ -1,26 +1,30 @@
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import MarqueeSection from "@/components/home/MarqueeSection";
+import CategoryShowcase from "@/components/home/CategoryShowcase";
+import FeaturedProducts from "@/components/home/FeaturedProducts";
+import TrustSection from "@/components/home/TrustSection";
 
 export const metadata: Metadata = {
   title: "Ziziwatches — L'Art du Temps",
-  description: "Montres de luxe pour ceux qui savent que chaque seconde compte. Livraison partout en Algérie.",
+  description:
+    "Montres de luxe, accessoires et cadeaux. Livraison partout au Maroc.",
   openGraph: {
     title: "Ziziwatches — L'Art du Temps",
     description: "Montres de luxe pour ceux qui savent que chaque seconde compte.",
     type: "website",
   },
 };
-import FeaturedProducts from "@/components/home/FeaturedProducts";
-import BrandFeatures from "@/components/home/BrandFeatures";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 
 export default async function HomePage() {
   const featuredProducts = await prisma.product.findMany({
     where: { featured: true, status: "ACTIVE" },
     include: {
       images: { orderBy: { position: "asc" }, take: 1 },
+      category: { select: { nameFr: true, nameEn: true, nameAr: true } },
     },
     take: 3,
     orderBy: { createdAt: "desc" },
@@ -30,29 +34,20 @@ export default async function HomePage() {
     <>
       <Header />
       <main>
+        {/* 1 — Hero: 88vh so categories peek below the fold */}
         <HeroSection />
-        <BrandFeatures />
-        <FeaturedProducts products={featuredProducts} />
+        <MarqueeSection />
 
-        {/* Brand Story */}
-        <section className="section-padding py-24">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-px h-16 bg-gradient-to-b from-transparent via-gold to-transparent mx-auto mb-8 opacity-50" />
-            <p className="text-gold text-xs tracking-[0.3em] uppercase mb-4">
-              Notre Marque
-            </p>
-            <h2 className="luxury-heading text-4xl lg:text-5xl font-light text-foreground mb-6 leading-tight">
-              L&apos;Histoire Ziziwatches
-            </h2>
-            <p className="text-foreground/50 leading-relaxed text-sm sm:text-base">
-              Née d&apos;une passion pour la précision et l&apos;élégance, Ziziwatches
-              crée des montres qui transcendent le temps. Chaque pièce est une
-              œuvre d&apos;art portée au poignet — conçue pour ceux qui exigent
-              l&apos;excellence dans chaque détail.
-            </p>
-            <div className="w-px h-16 bg-gradient-to-b from-gold via-gold/50 to-transparent mx-auto mt-8 opacity-30" />
-          </div>
-        </section>
+        {/* 2 — Category bento grid: main navigation of the store */}
+        <CategoryShowcase />
+
+        {/* 3 — Featured products (only shown when products exist) */}
+        {featuredProducts.length > 0 && (
+          <FeaturedProducts products={featuredProducts} />
+        )}
+
+        {/* 4 — Trust signals */}
+        <TrustSection />
       </main>
       <Footer />
     </>

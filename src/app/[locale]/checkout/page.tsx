@@ -29,7 +29,7 @@ const schema = z.object({
   email: z.string().email("Email invalide").optional().or(z.literal("")),
   street: z.string().min(5, "Adresse trop courte"),
   city: z.string().min(2, "Ville requise"),
-  wilaya: z.string().min(1, "Wilaya requise"),
+  wilaya: z.string().min(1, "Région requise"),
   notes: z.string().optional(),
 });
 

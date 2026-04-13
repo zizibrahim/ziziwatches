@@ -32,11 +32,17 @@
       "quality": "Qualité Premium",
       "qualityDesc": "Matériaux sélectionnés avec soin",
       "delivery": "Livraison Rapide",
-      "deliveryDesc": "Livraison dans toute l'Algérie",
+      "deliveryDesc": "Livraison dans tout le Maroc",
       "payment": "Paiement à la livraison",
       "paymentDesc": "Payez en recevant votre commande",
       "support": "Support 24/7",
       "supportDesc": "Notre équipe est toujours disponible"
+    },
+    "character": {
+      "tagline": "L'Expérience du Luxe",
+      "headline": "Portez la Confiance",
+      "sub": "Chaque accessoire est une déclaration.",
+      "cta": "Explorer la Collection"
     }
   },
   "shop": {
@@ -95,7 +101,7 @@
     "address": "Adresse de livraison",
     "street": "Adresse",
     "city": "Ville",
-    "wilaya": "Wilaya",
+    "wilaya": "Région",
     "notes": "Notes (optionnel)",
     "orderSummary": "Récapitulatif",
     "payment": "Paiement à la livraison",
@@ -159,6 +165,6 @@
     "edit": "Modifier",
     "view": "Voir",
     "search": "Rechercher",
-    "currency": "DZD"
+    "currency": "MAD"
   }
 }

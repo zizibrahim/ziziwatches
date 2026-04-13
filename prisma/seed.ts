@@ -6,43 +6,6 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Categories
-  const luxuryCategory = await prisma.category.upsert({
-    where: { slug: "luxury" },
-    update: {},
-    create: {
-      slug: "luxury",
-      nameEn: "Luxury",
-      nameFr: "Luxe",
-      nameAr: "فاخر",
-      description: "Premium luxury timepieces",
-    },
-  });
-
-  const sportCategory = await prisma.category.upsert({
-    where: { slug: "sport" },
-    update: {},
-    create: {
-      slug: "sport",
-      nameEn: "Sport",
-      nameFr: "Sport",
-      nameAr: "رياضي",
-      description: "Sport and adventure watches",
-    },
-  });
-
-  const classicCategory = await prisma.category.upsert({
-    where: { slug: "classic" },
-    update: {},
-    create: {
-      slug: "classic",
-      nameEn: "Classic",
-      nameFr: "Classique",
-      nameAr: "كلاسيكي",
-      description: "Timeless classic watches",
-    },
-  });
-
   // Products
   const products = [
     {
@@ -62,7 +25,6 @@ async function main() {
       stock: 15,
       featured: true,
       isNew: true,
-      categoryId: luxuryCategory.id,
       images: [
         {
           url: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800",
@@ -105,7 +67,6 @@ async function main() {
       stock: 8,
       featured: true,
       isNew: false,
-      categoryId: luxuryCategory.id,
       images: [
         {
           url: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800",
@@ -141,7 +102,6 @@ async function main() {
       stock: 20,
       featured: true,
       isNew: true,
-      categoryId: sportCategory.id,
       images: [
         {
           url: "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=800",
@@ -177,7 +137,6 @@ async function main() {
       stock: 12,
       featured: false,
       isNew: false,
-      categoryId: classicCategory.id,
       images: [
         {
           url: "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=800",
@@ -213,7 +172,6 @@ async function main() {
       stock: 7,
       featured: false,
       isNew: true,
-      categoryId: classicCategory.id,
       images: [
         {
           url: "https://images.unsplash.com/photo-1594534475808-b18fc33b045e?w=800",

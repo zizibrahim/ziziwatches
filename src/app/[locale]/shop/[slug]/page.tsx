@@ -113,13 +113,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Product Info */}
             <div className="flex flex-col">
               {/* Breadcrumb */}
-              <p className="text-foreground/30 text-xs tracking-wider uppercase mb-4">
-                {params.locale === "en"
-                  ? product.category.nameEn
-                  : params.locale === "ar"
-                  ? product.category.nameAr
-                  : product.category.nameFr}
-              </p>
+              {product.category && (
+                <p className="text-foreground/30 text-xs tracking-wider uppercase mb-4">
+                  {params.locale === "en"
+                    ? product.category.nameEn
+                    : params.locale === "ar"
+                    ? product.category.nameAr
+                    : product.category.nameFr}
+                </p>
+              )}
 
               {/* Title */}
               <h1 className="luxury-heading text-3xl sm:text-4xl lg:text-5xl font-light text-foreground leading-tight mb-4">

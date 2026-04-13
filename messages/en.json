@@ -37,6 +37,12 @@
       "paymentDesc": "Pay when you receive your order",
       "support": "24/7 Support",
       "supportDesc": "Our team is always available"
+    },
+    "character": {
+      "tagline": "The Luxury Experience",
+      "headline": "Wear Confidence",
+      "sub": "Every accessory is a statement.",
+      "cta": "Explore the Collection"
     }
   },
   "shop": {
@@ -95,7 +101,7 @@
     "address": "Delivery address",
     "street": "Street address",
     "city": "City",
-    "wilaya": "Wilaya",
+    "wilaya": "Region",
     "notes": "Notes (optional)",
     "orderSummary": "Order summary",
     "payment": "Cash on delivery",
@@ -159,6 +165,6 @@
     "edit": "Edit",
     "view": "View",
     "search": "Search",
-    "currency": "DZD"
+    "currency": "MAD"
   }
 }

@@ -32,7 +32,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
         `<tr>
           <td style="padding:8px 0;border-bottom:1px solid #1a1a1a;color:#aaa">${item.name}</td>
           <td style="padding:8px 0;border-bottom:1px solid #1a1a1a;color:#aaa;text-align:center">×${item.quantity}</td>
-          <td style="padding:8px 0;border-bottom:1px solid #1a1a1a;color:#c9a84c;text-align:right">${item.price.toLocaleString()} DZD</td>
+          <td style="padding:8px 0;border-bottom:1px solid #1a1a1a;color:#c9a84c;text-align:right">${item.price.toLocaleString()} MAD</td>
         </tr>`
     )
     .join("");
@@ -63,7 +63,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
         <tr>
           <td colspan="2" style="padding:12px 0 0;color:#888;font-size:13px">Total</td>
           <td style="padding:12px 0 0;color:#c9a84c;font-size:16px;text-align:right;font-weight:600">
-            ${data.total.toLocaleString()} DZD
+            ${data.total.toLocaleString()} MAD
           </td>
         </tr>
       </table>

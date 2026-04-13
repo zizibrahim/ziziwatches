@@ -36,54 +36,87 @@ export default function ProductGallery({
   return (
     <>
       <div className="space-y-3">
-        {/* Main image */}
-        <motion.div
-          className="relative aspect-square bg-surface overflow-hidden cursor-zoom-in group"
+        {/* Main image — diamond frame */}
+        <div
+          className="relative aspect-square flex items-center justify-center cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={activeImage.url}
-                alt={activeImage.altFr ?? productName}
-                fill
-                className="object-cover"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Zoom hint */}
-          <div className="absolute bottom-3 right-3 bg-black/50 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <ZoomIn size={14} className="text-white" />
+          {/* Diamond container */}
+          <div
+            className="relative overflow-hidden"
+            style={{
+              width: "82%",
+              height: "82%",
+              borderRadius: "18%",
+              transform: "rotate(45deg)",
+              background: "linear-gradient(135deg, rgba(180,200,255,0.18) 0%, rgba(120,140,220,0.10) 100%)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              boxShadow: "0 24px 72px rgba(0,0,0,0.20), inset 0 0 0 1px rgba(255,255,255,0.20)",
+            }}
+          >
+            {/* Counter-rotated image */}
+            <div className="absolute inset-0" style={{ transform: "rotate(-45deg) scale(1.42)" }}>
+              <div className="relative w-full h-full">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0"
+                  >
+                    <Image
+                      src={activeImage.url}
+                      alt={activeImage.altFr ?? productName}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+            {/* Inner highlight */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 35%)",
+                borderRadius: "inherit",
+              }}
+            />
+            {/* Inner border */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ borderRadius: "inherit", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.18)" }}
+            />
           </div>
 
-          {/* Arrow nav (only if multiple images) */}
+          {/* Arrow nav — positioned on the sides of the outer square */}
           {images.length > 1 && (
             <>
               <button
                 onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute left-0 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground/60 hover:text-foreground p-2 transition-colors"
               >
                 <ChevronLeft size={16} />
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute right-0 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground/60 hover:text-foreground p-2 transition-colors"
               >
                 <ChevronRight size={16} />
               </button>
             </>
           )}
-        </motion.div>
+
+          {/* Zoom hint */}
+          <div className="absolute bottom-2 right-1/2 translate-x-1/2 bg-black/40 p-1.5 opacity-50 hover:opacity-100 transition-opacity pointer-events-none">
+            <ZoomIn size={12} className="text-white" />
+          </div>
+        </div>
 
         {/* Thumbnails */}
         {images.length > 1 && (
