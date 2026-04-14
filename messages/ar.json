@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "الرئيسية",
     "shop": "المتجر",
     "collections": "المجموعات",
     "about": "من نحن",
@@ -147,6 +148,33 @@
     "contact": "اتصل بنا",
     "followUs": "تابعنا",
     "rights": "جميع الحقوق محفوظة"
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "subtitle": "هل لديك سؤال؟ سنرد عليك في أقرب وقت ممكن.",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "subject": "الموضوع",
+    "message": "رسالتك",
+    "send": "إرسال",
+    "sending": "جاري الإرسال...",
+    "successTitle": "تم إرسال الرسالة",
+    "success": "شكراً! تم استقبال رسالتك. سنرد عليك قريباً جداً.",
+    "sendAnother": "إرسال رسالة أخرى",
+    "error": "حدث خطأ ما. يرجى المحاولة مجدداً.",
+    "namePlaceholder": "محمد أمين",
+    "emailPlaceholder": "example@mail.com",
+    "subjectPlaceholder": "ما موضوع رسالتك؟",
+    "messagePlaceholder": "اشرح طلبك...",
+    "required": "حقل مطلوب",
+    "invalidEmail": "بريد إلكتروني غير صالح",
+    "infoEmail": "البريد الإلكتروني",
+    "infoPhone": "الهاتف",
+    "infoLocation": "الموقع",
+    "quote": "كل سؤال يستحق إجابة استثنائية.",
+    "responseTime": "رد خلال 24 ساعة",
+    "faqTagline": "الأسئلة الشائعة",
+    "faqTitle": "هل لديك سؤال؟"
   },
   "chat": {
     "title": "زيزي — المساعد",

@@ -22,7 +22,7 @@ interface Product {
   compareAtPrice: number | null;
   coffretPrice: number | null;
   stock: number;
-  categoryId: string;
+  categoryId?: string | null;
   status: string;
   featured: boolean;
   isNew: boolean;
@@ -198,7 +198,7 @@ export default function EditProductModal({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={labelClass}>Catégorie</label>
-                  <select value={form.categoryId} onChange={(e) => set("categoryId", e.target.value)} className={inputClass}>
+                  <select value={form.categoryId ?? ""} onChange={(e) => set("categoryId", e.target.value)} className={inputClass}>
                     {categories.map((c) => <option key={c.id} value={c.id}>{c.nameFr}</option>)}
                   </select>
                 </div>

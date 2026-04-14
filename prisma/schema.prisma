@@ -246,6 +246,24 @@ model Project {
   @@map("projects")
 }
 
+// ─── FAQ ──────────────────────────────────────────────────────────────────────
+
+model Faq {
+  id         String   @id @default(cuid())
+  questionFr String
+  questionEn String
+  questionAr String
+  answerFr   String
+  answerEn   String
+  answerAr   String
+  order      Int      @default(0)
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("faqs")
+}
+
 // ─── SETTINGS ─────────────────────────────────────────────────────────────────
 
 model Setting {

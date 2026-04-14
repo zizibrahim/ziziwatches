@@ -59,7 +59,7 @@ export default async function AdminProductsPage() {
                     <span className="text-xs px-2 py-0.5 rounded-full text-gold bg-gold/10">★ Featured</span>
                   )}
                 </div>
-                <p className="text-foreground/40 text-xs font-mono">{product.sku} · {product.category.nameFr}</p>
+                <p className="text-foreground/40 text-xs font-mono">{product.sku}{product.category ? ` · ${product.category.nameFr}` : ""}</p>
               </div>
 
               {/* Price & stock */}

@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Home",
     "shop": "Shop",
     "collections": "Collections",
     "about": "About",
@@ -147,6 +148,33 @@
     "contact": "Contact",
     "followUs": "Follow us",
     "rights": "All rights reserved"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question? We'll get back to you as soon as possible.",
+    "name": "Full name",
+    "email": "Email address",
+    "subject": "Subject",
+    "message": "Your message",
+    "send": "Send",
+    "sending": "Sending...",
+    "successTitle": "Message sent",
+    "success": "Thank you! Your message has been received. We'll reply very soon.",
+    "sendAnother": "Send another message",
+    "error": "Something went wrong. Please try again.",
+    "namePlaceholder": "John Doe",
+    "emailPlaceholder": "john@example.com",
+    "subjectPlaceholder": "What is this about?",
+    "messagePlaceholder": "Describe your request...",
+    "required": "Required field",
+    "invalidEmail": "Invalid email address",
+    "infoEmail": "Email",
+    "infoPhone": "Phone",
+    "infoLocation": "Location",
+    "quote": "Every question deserves an exceptional answer.",
+    "responseTime": "Response within 24h",
+    "faqTagline": "Frequently asked",
+    "faqTitle": "Have a question?"
   },
   "chat": {
     "title": "Zizi — Assistant",

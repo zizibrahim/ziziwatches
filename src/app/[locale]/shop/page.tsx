@@ -62,64 +62,65 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
     <>
       <Header />
       <main className="min-h-screen pt-24">
-        {/* Page Header */}
-        <div className="section-padding py-12 border-b border-border">
-          <p className="text-gold text-xs tracking-[0.3em] uppercase mb-2">Ziziwatches</p>
-          <h1 className="luxury-heading text-4xl lg:text-5xl font-light text-foreground">
-            {t("title")}
-          </h1>
-          <p className="text-foreground/40 text-sm mt-2">{t("subtitle")}</p>
+        {/* Page Header + Category tabs */}
+        <div className="border-b border-border">
+          <div className="section-padding pt-10 pb-0">
+            <p className="text-gold text-xs tracking-[0.3em] uppercase mb-3">Ziziwatches</p>
+
+            {/* Active category name — big title */}
+            {(() => {
+              const activeCat = categories.find(c => c.slug === searchParams.category);
+              const activeLabel = activeCat
+                ? (params.locale === "en" ? activeCat.nameEn : params.locale === "ar" ? activeCat.nameAr : activeCat.nameFr)
+                : t("title");
+              return (
+                <h1 className="luxury-heading text-4xl lg:text-5xl font-light text-foreground mb-1">
+                  {activeLabel}
+                </h1>
+              );
+            })()}
+
+            {/* Tab switcher */}
+            {categories.length > 0 && (
+              <div className="flex overflow-x-auto -mb-px">
+                <a
+                  href={`/${params.locale}/shop${searchParams.q ? `?q=${searchParams.q}` : ""}`}
+                  className={`shrink-0 px-5 py-3 text-[11px] tracking-[0.3em] uppercase font-medium border-b-2 transition-colors ${
+                    !searchParams.category
+                      ? "border-gold text-gold"
+                      : "border-transparent text-foreground/40 hover:text-foreground/70"
+                  }`}
+                >
+                  {t("allProducts")}
+                </a>
+                {categories.map((cat) => {
+                  const catName =
+                    params.locale === "en" ? cat.nameEn : params.locale === "ar" ? cat.nameAr : cat.nameFr;
+                  const href = `/${params.locale}/shop?category=${cat.slug}${searchParams.q ? `&q=${searchParams.q}` : ""}`;
+                  return (
+                    <a
+                      key={cat.id}
+                      href={href}
+                      className={`shrink-0 px-5 py-3 text-[11px] tracking-[0.3em] uppercase font-medium border-b-2 transition-colors ${
+                        searchParams.category === cat.slug
+                          ? "border-gold text-gold"
+                          : "border-transparent text-foreground/40 hover:text-foreground/70"
+                      }`}
+                    >
+                      {catName}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="section-padding py-10">
-          {/* Filters + Search bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            {/* Category filters — horizontal scroll on mobile */}
-            <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
-              <a
-                href={`/${params.locale}/shop${searchParams.q ? `?q=${searchParams.q}` : ""}`}
-                className={`text-xs tracking-wider uppercase px-4 py-2 border transition-colors ${
-                  !searchParams.category
-                    ? "border-gold text-gold"
-                    : "border-border text-foreground/50 hover:border-gold/30 hover:text-foreground/70"
-                }`}
-              >
-                {t("allProducts")}
-              </a>
-              {categories.map((cat) => {
-                const catName =
-                  params.locale === "en" ? cat.nameEn : params.locale === "ar" ? cat.nameAr : cat.nameFr;
-                const href = `/${params.locale}/shop?category=${cat.slug}${searchParams.q ? `&q=${searchParams.q}` : ""}`;
-                return (
-                  <a
-                    key={cat.id}
-                    href={href}
-                    className={`text-xs tracking-wider uppercase px-4 py-2 border transition-colors ${
-                      searchParams.category === cat.slug
-                        ? "border-gold text-gold"
-                        : "border-border text-foreground/50 hover:border-gold/30 hover:text-foreground/70"
-                    }`}
-                  >
-                    {catName}
-                  </a>
-                );
-              })}
-            </div>
-
-            {/* Search */}
+          {/* Search + Sort row */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <SearchBar locale={params.locale} />
-          </div>
-
-          {/* Sort + Count row */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
-            <p className="text-foreground/30 text-xs">
-              {q && (
-                <span className="text-gold mr-2">&ldquo;{q}&rdquo; —</span>
-              )}
-              {products.length} produit{products.length !== 1 ? "s" : ""}
-            </p>
-
-            <div className="flex items-center gap-3 overflow-x-auto pb-0.5">
+            <div className="flex items-center gap-3">
               <span className="text-foreground/40 text-xs shrink-0">{t("sortBy")}:</span>
               {(["newest", "priceAsc", "priceDesc"] as const).map((s) => (
                 <a
@@ -146,13 +147,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
               )}
             </div>
           ) : (
-            <>
-              <p className="text-center text-gold text-[11px] tracking-[0.35em] uppercase mb-4 font-light">
-                — {products.length} pièces —
-              </p>
-              {/* Diamond grid */}
-              <ProductDiamondGrid products={products} />
-            </>
+            <ProductDiamondGrid products={products} />
           )}
         </div>
 

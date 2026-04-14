@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+const ADMIN_EMAIL = "asmaezouggari321@gmail.com";
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST ?? "smtp.gmail.com",
   port: parseInt(process.env.SMTP_PORT ?? "587"),
@@ -93,6 +95,62 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
     from: `"Ziziwatches" <${process.env.SMTP_USER}>`,
     to: data.customerEmail,
     subject: `Commande ${data.orderNumber} confirmée — Ziziwatches`,
+    html,
+  });
+}
+
+export interface ContactEmailData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export async function sendContactEmail(data: ContactEmailData) {
+  if (!process.env.SMTP_USER) {
+    console.log("📧 Email not configured — contact message from:", data.email);
+    return;
+  }
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:Georgia,serif">
+  <div style="max-width:560px;margin:40px auto;padding:0 20px">
+    <div style="text-align:center;padding:40px 0 30px;border-bottom:1px solid #1a1a1a">
+      <p style="color:#c9a84c;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;margin:0 0 8px">Ziziwatches</p>
+      <h1 style="color:#f5f0e6;font-size:20px;font-weight:300;margin:0;letter-spacing:0.1em">Nouveau message de contact</h1>
+    </div>
+    <div style="padding:32px 0">
+      <table style="width:100%;border-collapse:collapse">
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#c9a84c;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;width:30%">Nom</td>
+          <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#aaa;font-size:14px">${data.name}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#c9a84c;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">Email</td>
+          <td style="padding:10px 0;border-bottom:1px solid #1a1a1a;color:#aaa;font-size:14px"><a href="mailto:${data.email}" style="color:#c9a84c">${data.email}</a></td>
+        </tr>
+      </table>
+      <div style="margin-top:24px;background:#111;border:1px solid #1a1a1a;padding:20px">
+        <p style="color:#c9a84c;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;margin:0 0 12px">Message</p>
+        <p style="color:#aaa;font-size:14px;line-height:1.7;margin:0;white-space:pre-wrap">${data.message}</p>
+      </div>
+    </div>
+    <div style="border-top:1px solid #1a1a1a;padding:24px 0;text-align:center">
+      <p style="color:#444;font-size:11px;margin:0;letter-spacing:0.2em">
+        © ${new Date().getFullYear()} ZIZIWATCHES
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  await transporter.sendMail({
+    from: `"Ziziwatches Contact" <${process.env.SMTP_USER}>`,
+    to: ADMIN_EMAIL,
+    replyTo: data.email,
+    subject: `[Contact] Message de ${data.name}`,
     html,
   });
 }

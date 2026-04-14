@@ -17,7 +17,7 @@ const schema = z.object({
   status: z.enum(["ACTIVE", "DRAFT", "ARCHIVED"]).optional(),
   featured: z.boolean().optional(),
   isNew: z.boolean().optional(),
-  imageUrl: z.string().url().nullable().optional(),
+  imageUrl: z.string().nullable().optional(),
 });
 
 export async function PATCH(

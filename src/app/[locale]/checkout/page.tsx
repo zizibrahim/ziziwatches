@@ -2,24 +2,30 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Check, Package } from "lucide-react";
+import { Package } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useCartStore } from "@/store/cartStore";
 import { formatPrice } from "@/lib/utils";
 
 const WILAYAS = [
-  "Adrar","Chlef","Laghouat","Oum El Bouaghi","Batna","Béjaïa","Biskra","Béchar",
-  "Blida","Bouira","Tamanrasset","Tébessa","Tlemcen","Tiaret","Tizi Ouzou","Alger",
-  "Djelfa","Jijel","Sétif","Saïda","Skikda","Sidi Bel Abbès","Annaba","Guelma",
-  "Constantine","Médéa","Mostaganem","M'Sila","Mascara","Ouargla","Oran","El Bayadh",
-  "Illizi","Bordj Bou Arréridj","Boumerdès","El Tarf","Tindouf","Tissemsilt",
-  "El Oued","Khenchela","Souk Ahras","Tipaza","Mila","Aïn Defla","Naâma","Aïn Témouchent",
-  "Ghardaïa","Relizane",
+  "Tanger-Tétouan-Al Hoceïma",
+  "L'Oriental",
+  "Fès-Meknès",
+  "Rabat-Salé-Kénitra",
+  "Béni Mellal-Khénifra",
+  "Casablanca-Settat",
+  "Marrakech-Safi",
+  "Drâa-Tafilalet",
+  "Souss-Massa",
+  "Guelmim-Oued Noun",
+  "Laâyoune-Sakia El Hamra",
+  "Dakhla-Oued Ed-Dahab",
 ];
 
 const schema = z.object({
@@ -38,8 +44,8 @@ type FormData = z.infer<typeof schema>;
 export default function CheckoutPage() {
   const t = useTranslations("checkout");
   const locale = useLocale();
+  const router = useRouter();
   const { items, getSubtotal, clearCart } = useCartStore();
-  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,7 +84,7 @@ export default function CheckoutPage() {
       }
 
       clearCart();
-      setOrderNumber(result.orderNumber);
+      router.push(`/${locale}/order-success?n=${result.orderNumber}&t=${result.total}&phone=${encodeURIComponent(data.phone)}&name=${encodeURIComponent(data.firstName)}`);
     } catch {
       setError("Erreur réseau. Vérifiez votre connexion.");
     } finally {
@@ -86,35 +92,7 @@ export default function CheckoutPage() {
     }
   };
 
-  // Success state
-  if (orderNumber) {
-    return (
-      <>
-        <Header />
-        <main className="min-h-screen pt-24 flex items-center justify-center section-padding">
-          <div className="text-center max-w-md mx-auto">
-            <div className="w-16 h-16 bg-gold/10 border border-gold rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check size={28} className="text-gold" />
-            </div>
-            <h1 className="luxury-heading text-3xl font-light text-foreground mb-3">
-              Commande confirmée !
-            </h1>
-            <p className="text-foreground/50 text-sm mb-2">
-              Votre commande a été passée avec succès.
-            </p>
-            <p className="text-gold font-mono text-lg mb-8">{orderNumber}</p>
-            <p className="text-foreground/40 text-xs mb-8">
-              Notre équipe vous contactera pour confirmer la livraison.
-            </p>
-            <Link href={`/${locale}/shop`} className="btn-outline inline-block">
-              Continuer les achats
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+
 
   if (items.length === 0) {
     return (

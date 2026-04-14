@@ -23,13 +23,13 @@ export async function POST(req: NextRequest) {
     const result = await generateRecommendations({
       currentProduct: {
         name: currentProduct.nameFr,
-        category: currentProduct.category.nameFr,
+        category: currentProduct.category?.nameFr ?? "",
         tags: currentProduct.tags.map((t) => t.tag),
       },
       availableProducts: allProducts.map((p) => ({
         id: p.id,
         name: p.nameFr,
-        category: p.categoryId,
+        category: p.categoryId ?? "",
         price: p.price,
       })),
     });

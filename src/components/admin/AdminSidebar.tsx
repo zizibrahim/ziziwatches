@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import AdminLogout from "./AdminLogout";
 import {
   LayoutDashboard, ShoppingBag, Package, Users, Briefcase,
-  LogOut, Menu, X,
+  LogOut, Menu, X, HelpCircle, Tag,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,8 +14,10 @@ const navItems = [
   { href: "", label: "Dashboard", icon: LayoutDashboard },
   { href: "/orders", label: "Commandes", icon: ShoppingBag },
   { href: "/products", label: "Produits", icon: Package },
+  { href: "/categories", label: "Catégories", icon: Tag },
   { href: "/customers", label: "Clients", icon: Users },
   { href: "/projects", label: "Projets", icon: Briefcase },
+  { href: "/faqs", label: "FAQ", icon: HelpCircle },
 ];
 
 function SidebarContent({

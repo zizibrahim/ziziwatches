@@ -27,19 +27,15 @@ export default function Header() {
   }, []);
 
   const navLinks = [
+    { href: `/${locale}`, label: t("home") },
     { href: `/${locale}/shop`, label: t("shop") },
     { href: `/${locale}/shop`, label: t("collections") },
+    { href: `/${locale}/contact`, label: t("contact") },
   ];
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "bg-background/95 backdrop-blur-sm border-b border-border"
-            : "bg-transparent"
-        }`}
-      >
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-500">
         <div className="section-padding">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
@@ -49,9 +45,7 @@ export default function Header() {
                 alt="Ziziwatches"
                 width={220}
                 height={80}
-                className={`h-20 w-auto object-contain transition-all duration-300 brightness-0 ${
-                  scrolled ? "dark:invert" : "invert"
-                }`}
+                className="h-20 w-auto object-contain brightness-0 dark:invert"
                 priority
               />
             </Link>

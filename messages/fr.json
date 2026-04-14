@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Accueil",
     "shop": "Boutique",
     "collections": "Collections",
     "about": "À propos",
@@ -147,6 +148,33 @@
     "contact": "Contact",
     "followUs": "Suivez-nous",
     "rights": "Tous droits réservés"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Une question ? Nous vous répondons dans les plus brefs délais.",
+    "name": "Nom complet",
+    "email": "Adresse e-mail",
+    "subject": "Sujet",
+    "message": "Votre message",
+    "send": "Envoyer",
+    "sending": "Envoi en cours...",
+    "successTitle": "Message envoyé",
+    "success": "Merci ! Votre message a bien été reçu. Nous vous répondrons très prochainement.",
+    "sendAnother": "Envoyer un autre message",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "namePlaceholder": "Jean Dupont",
+    "emailPlaceholder": "jean@exemple.com",
+    "subjectPlaceholder": "À quel sujet ?",
+    "messagePlaceholder": "Décrivez votre demande...",
+    "required": "Champ obligatoire",
+    "invalidEmail": "Adresse e-mail invalide",
+    "infoEmail": "Email",
+    "infoPhone": "Téléphone",
+    "infoLocation": "Localisation",
+    "quote": "Chaque question mérite une réponse d'exception.",
+    "responseTime": "Réponse sous 24h",
+    "faqTagline": "Questions fréquentes",
+    "faqTitle": "Vous avez une question ?"
   },
   "chat": {
     "title": "Zizi — Assistant",
