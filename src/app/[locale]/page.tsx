@@ -4,9 +4,12 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import MarqueeSection from "@/components/home/MarqueeSection";
-import CategoryShowcase from "@/components/home/CategoryShowcase";
-import FeaturedProducts from "@/components/home/FeaturedProducts";
-import TrustSection from "@/components/home/TrustSection";
+import CategoryCircles from "@/components/home/CategoryCircles";
+import BestsellersSection from "@/components/home/BestsellersSection";
+import BrandManifesto from "@/components/home/BrandManifesto";
+import ReviewsSection from "@/components/home/ReviewsSection";
+import StandsForSection from "@/components/home/StandsForSection";
+import VipBannerSection from "@/components/home/VipBannerSection";
 
 export const metadata: Metadata = {
   title: "Ziziwatches — L'Art du Temps",
@@ -20,34 +23,25 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const featuredProducts = await prisma.product.findMany({
-    where: { featured: true, status: "ACTIVE" },
-    include: {
-      images: { orderBy: { position: "asc" }, take: 1 },
-      category: { select: { nameFr: true, nameEn: true, nameAr: true } },
-    },
-    take: 3,
-    orderBy: { createdAt: "desc" },
+  const approvedReviews = await prisma.review.findMany({
+    where: { status: "APPROVED", rating: { not: null } },
+    include: { product: { select: { nameFr: true } } },
+    orderBy: { approvedAt: "desc" },
+    take: 20,
   });
 
   return (
     <>
       <Header />
       <main>
-        {/* 1 — Hero: 88vh so categories peek below the fold */}
         <HeroSection />
         <MarqueeSection />
-
-        {/* 2 — Category bento grid: main navigation of the store */}
-        <CategoryShowcase />
-
-        {/* 3 — Featured products (only shown when products exist) */}
-        {featuredProducts.length > 0 && (
-          <FeaturedProducts products={featuredProducts} />
-        )}
-
-        {/* 4 — Trust signals */}
-        <TrustSection />
+        <CategoryCircles />
+        <BestsellersSection />
+        <BrandManifesto />
+        <ReviewsSection reviews={approvedReviews as any} />
+        <StandsForSection />
+        <VipBannerSection />
       </main>
       <Footer />
     </>

@@ -28,12 +28,17 @@ export async function GET() {
   }
 
   // Totals
-  const [totalOrders, totalRevenue, totalProducts, totalCustomers] = await Promise.all([
+  const [totalOrders, totalRevenue, totalProducts, uniquePhones] = await Promise.all([
     prisma.order.count(),
     prisma.order.aggregate({ _sum: { total: true } }),
     prisma.product.count({ where: { status: "ACTIVE" } }),
-    prisma.user.count({ where: { role: "CUSTOMER" } }),
+    prisma.order.findMany({
+      select: { guestPhone: true },
+      where: { guestPhone: { not: null } },
+      distinct: ["guestPhone"],
+    }),
   ]);
+  const totalCustomers = uniquePhones.length;
 
   // Order status breakdown
   const statusGroups = await prisma.order.groupBy({

@@ -11,13 +11,51 @@
     "orders": "طلباتي",
     "logout": "تسجيل الخروج"
   },
+  "header": {
+    "aboutUs": "من نحن",
+    "story": "قصتنا",
+    "trackOrder": "تتبع الطلب",
+    "faq": "الأسئلة الشائعة",
+    "reviews": "آراء العملاء",
+    "privacy": "الخصوصية",
+    "cgv": "الشروط العامة",
+    "search": "بحث",
+    "language": "اللغة",
+    "account": "حسابي",
+    "cart": "السلة",
+    "searchPlaceholder": "ابحث هنا..."
+  },
+  "categories": {
+    "men": "رجال",
+    "women": "نساء",
+    "watches": "ساعات",
+    "accessories": "إكسسوارات",
+    "packs": "باقات",
+    "gifts": "هدايا",
+    "mensWatches": "ساعات رجالية",
+    "womensWatches": "ساعات نسائية",
+    "mensJewellery": "مجوهرات رجالية",
+    "womensJewellery": "مجوهرات نسائية",
+    "bestsellers": "الأكثر مبيعاً",
+    "giftsForHim": "هدايا له",
+    "giftsForHer": "هدايا لها",
+    "showAll": "عرض الكل",
+    "newArrivals": "وصل حديثاً",
+    "couples": "أزواج",
+    "selectedGifts": "هدايا مختارة",
+    "weddingGifts": "هدايا الزفاف",
+    "birthdayGifts": "هدايا أعياد الميلاد",
+    "anniversaryGifts": "هدايا ذكرى الزواج",
+    "giftCards": "بطاقات هدايا",
+    "jewellery": "مجوهرات"
+  },
   "home": {
     "hero": {
       "tagline": "فن الوقت",
       "headline": "ارتدِ التميز",
-      "subheadline": "ساعات فاخرة لمن يعرف أن كل ثانية تُحتسب.",
+      "subheadline": "ساعات فاخرة لمن يعلم أن كل ثانية تُحتسب.",
       "cta": "اكتشف المجموعة",
-      "scroll": "تمرير"
+      "scroll": "انزل"
     },
     "featured": {
       "title": "قطع استثنائية",
@@ -25,24 +63,24 @@
       "viewAll": "عرض الكل"
     },
     "story": {
-      "title": "قصة زيزيووتشس",
-      "text": "وُلدت من شغف بالدقة والأناقة، تصنع زيزيووتشس ساعات تتجاوز حدود الزمن. كل قطعة هي تحفة فنية تُرتدى على المعصم.",
+      "title": "قصة زيزيواتش",
+      "text": "وُلدت من شغف بالدقة والأناقة، تصنع زيزيواتش ساعات تتخطى حدود الزمن. كل قطعة تحفة فنية تُرتدى على المعصم.",
       "cta": "قصتنا"
     },
     "features": {
       "quality": "جودة فائقة",
       "qualityDesc": "مواد مختارة بعناية",
       "delivery": "توصيل سريع",
-      "deliveryDesc": "التوصيل في جميع أنحاء الجزائر",
+      "deliveryDesc": "توصيل في جميع أنحاء المغرب",
       "payment": "الدفع عند الاستلام",
       "paymentDesc": "ادفع نقداً عند استلام طلبك",
       "support": "دعم على مدار الساعة",
-      "supportDesc": "فريقنا متاح دائماً"
+      "supportDesc": "فريقنا متاح دائماً لمساعدتك"
     },
     "character": {
       "tagline": "تجربة الفخامة",
       "headline": "ارتدِ الثقة",
-      "sub": "كل إكسسوار هو تصريح.",
+      "sub": "كل إكسسوار هو تعبير عن شخصيتك.",
       "cta": "استكشف المجموعة"
     }
   },
@@ -56,10 +94,10 @@
     "inStock": "متوفر",
     "allProducts": "جميع المنتجات",
     "noResults": "لم يتم العثور على منتجات",
-    "addToCart": "أضف إلى السلة",
-    "outOfStock": "نفذ من المخزون",
+    "addToCart": "أضف للسلة",
+    "outOfStock": "نفد من المخزون",
     "new": "جديد",
-    "sale": "تخفيض",
+    "sale": "تخفيضات",
     "from": "ابتداءً من",
     "sortOptions": {
       "newest": "الأحدث",
@@ -69,9 +107,9 @@
     }
   },
   "product": {
-    "addToCart": "أضف إلى السلة",
+    "addToCart": "أضف للسلة",
     "buyNow": "اشتر الآن",
-    "outOfStock": "نفذ من المخزون",
+    "outOfStock": "نفد من المخزون",
     "description": "الوصف",
     "specifications": "المواصفات",
     "recommended": "قد يعجبك أيضاً",
@@ -87,8 +125,8 @@
     "subtotal": "المجموع الفرعي",
     "shipping": "الشحن",
     "free": "مجاني",
-    "total": "المجموع",
-    "checkout": "إتمام الشراء",
+    "total": "الإجمالي",
+    "checkout": "إتمام الطلب",
     "remove": "حذف",
     "quantity": "الكمية"
   },
@@ -102,7 +140,7 @@
     "address": "عنوان التوصيل",
     "street": "العنوان",
     "city": "المدينة",
-    "wilaya": "الجهة",
+    "wilaya": "المنطقة",
     "notes": "ملاحظات (اختياري)",
     "orderSummary": "ملخص الطلب",
     "payment": "الدفع عند الاستلام",
@@ -110,7 +148,7 @@
     "placeOrder": "تأكيد الطلب",
     "placing": "جاري المعالجة...",
     "required": "حقل مطلوب",
-    "invalidPhone": "رقم غير صالح"
+    "invalidPhone": "رقم غير صحيح"
   },
   "order": {
     "confirmed": "تم تأكيد الطلب!",
@@ -134,17 +172,17 @@
     "password": "كلمة المرور",
     "name": "الاسم الكامل",
     "loginBtn": "دخول",
-    "registerBtn": "إنشاء",
+    "registerBtn": "تسجيل",
     "noAccount": "ليس لديك حساب؟",
     "hasAccount": "لديك حساب بالفعل؟",
     "forgotPassword": "نسيت كلمة المرور؟"
   },
   "footer": {
-    "tagline": "فن الوقت، يُرتدى بأناقة.",
+    "tagline": "فن الوقت، بأناقة لا تُضاهى.",
     "shop": "المتجر",
-    "legal": "القانوني",
+    "legal": "قانوني",
     "privacy": "الخصوصية",
-    "terms": "الشروط",
+    "terms": "الشروط والأحكام",
     "contact": "اتصل بنا",
     "followUs": "تابعنا",
     "rights": "جميع الحقوق محفوظة"
@@ -159,15 +197,15 @@
     "send": "إرسال",
     "sending": "جاري الإرسال...",
     "successTitle": "تم إرسال الرسالة",
-    "success": "شكراً! تم استقبال رسالتك. سنرد عليك قريباً جداً.",
+    "success": "شكراً! تم استلام رسالتك. سنرد عليك قريباً جداً.",
     "sendAnother": "إرسال رسالة أخرى",
-    "error": "حدث خطأ ما. يرجى المحاولة مجدداً.",
-    "namePlaceholder": "محمد أمين",
-    "emailPlaceholder": "example@mail.com",
+    "error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "namePlaceholder": "محمد العمري",
+    "emailPlaceholder": "mohammed@example.com",
     "subjectPlaceholder": "ما موضوع رسالتك؟",
     "messagePlaceholder": "اشرح طلبك...",
     "required": "حقل مطلوب",
-    "invalidEmail": "بريد إلكتروني غير صالح",
+    "invalidEmail": "بريد إلكتروني غير صحيح",
     "infoEmail": "البريد الإلكتروني",
     "infoPhone": "الهاتف",
     "infoLocation": "الموقع",
@@ -180,7 +218,7 @@
     "title": "زيزي — المساعد",
     "placeholder": "اطرح سؤالك...",
     "send": "إرسال",
-    "greeting": "مرحباً! أنا زيزي، مستشارك في زيزيووتشس. كيف يمكنني مساعدتك؟"
+    "greeting": "مرحباً! أنا زيزي، مستشارك في زيزيواتش. كيف يمكنني مساعدتك؟"
   },
   "common": {
     "loading": "جاري التحميل...",
@@ -193,6 +231,6 @@
     "edit": "تعديل",
     "view": "عرض",
     "search": "بحث",
-    "currency": "دج"
+    "currency": "درهم"
   }
 }

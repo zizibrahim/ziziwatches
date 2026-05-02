@@ -3,28 +3,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "next-intl";
-import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useMotionTemplate,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
-// Grid: 3 cols × 3 rows
-// [  Homme (2×2)  ] [ Femme  ]
-// [  Homme (2×2)  ] [ Accss  ]
-// [ Packs (1×1) ] [  Cadeaux (2×1) ]
 const categories = [
   {
     slug: "montres-homme",
     label: "Montres Homme",
     sub: "Collection masculine",
-    image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=1200&q=85",
-    span: "col-span-2 sm:col-span-2 sm:row-span-2",
-    h: "h-[190px] sm:h-auto",
+    image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=800&q=85",
     num: "01",
   },
   {
@@ -32,17 +19,13 @@ const categories = [
     label: "Montres Femme",
     sub: "Élégance au poignet",
     image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&q=85",
-    span: "col-span-1",
-    h: "h-[140px] sm:h-auto",
     num: "02",
   },
   {
     slug: "accessoires",
     label: "Accessoires",
-    sub: "Bracelets & boîtes",
+    sub: "Bracelets & étuis",
     image: "https://images.unsplash.com/photo-1548169874-53e85f753f1e?w=800&q=85",
-    span: "col-span-1",
-    h: "h-[140px] sm:h-auto",
     num: "03",
   },
   {
@@ -50,147 +33,147 @@ const categories = [
     label: "Packs",
     sub: "Offres groupées",
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=85",
-    span: "col-span-1",
-    h: "h-[140px] sm:h-auto",
     num: "04",
   },
   {
     slug: "cadeaux",
     label: "Cadeaux",
     sub: "Idées cadeaux",
-    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=1200&q=85",
-    span: "col-span-1 sm:col-span-2",
-    h: "h-[140px] sm:h-auto",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&q=85",
     num: "05",
   },
 ];
-
-function Tile({
-  cat,
-  index,
-  locale,
-}: {
-  cat: (typeof categories)[number];
-  index: number;
-  locale: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-
-  const rx = useSpring(useTransform(my, [0, 1], [5, -5]), { stiffness: 200, damping: 25 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-5, 5]), { stiffness: 200, damping: 25 });
-
-  const glareX = useTransform(mx, [0, 1], ["0%", "100%"]);
-  const glareY = useTransform(my, [0, 1], ["0%", "100%"]);
-  const glare = useMotionTemplate`radial-gradient(circle at ${glareX} ${glareY}, rgba(201,168,76,0.18) 0%, transparent 55%)`;
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  };
-  const onMouseLeave = () => { mx.set(0.5); my.set(0.5); };
-
-  return (
-    <motion.div
-      ref={ref}
-      className={`${cat.span} ${cat.h}`}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <Link
-        href={`/${locale}/shop?category=${cat.slug}`}
-        className="relative flex h-full w-full overflow-hidden group"
-      >
-        {/* Image */}
-        <Image
-          src={cat.image}
-          alt={cat.label}
-          fill
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
-          sizes="(max-width: 640px) 90vw, 45vw"
-        />
-
-        {/* Dark gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/5" />
-
-        {/* Gold glare following cursor */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: glare }}
-        />
-
-        {/* Category number */}
-        <span className="absolute top-4 right-5 luxury-heading text-5xl font-light text-white/[0.06] select-none">
-          {cat.num}
-        </span>
-
-        {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 lg:p-6 flex items-end justify-between">
-          <div>
-            <p className="text-white/40 text-[9px] tracking-[0.3em] uppercase mb-1 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-400">
-              {cat.sub}
-            </p>
-            <h3 className="text-white font-light luxury-heading text-lg sm:text-xl lg:text-2xl leading-tight">
-              {cat.label}
-            </h3>
-            <div className="h-px w-0 group-hover:w-12 bg-gold mt-2 transition-all duration-500 ease-out" />
-          </div>
-          <div className="opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-            <div className="w-8 h-8 border border-gold/50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-              <ArrowUpRight size={13} className="text-gold" />
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
 
 export default function CategoryShowcase() {
   const locale = useLocale();
 
   return (
-    <section className="bg-background">
-      {/* Header */}
-      <div className="section-padding pt-20 pb-8">
+    <section className="bg-background py-12 sm:py-20 lg:py-32">
+
+      {/* Section header */}
+      <div className="section-padding mb-8 sm:mb-10 lg:mb-14">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-gold text-xs tracking-[0.35em] uppercase mb-2">Explorer</p>
-            <h2 className="luxury-heading text-3xl sm:text-4xl lg:text-5xl font-light text-foreground">
-              Nos Catégories
-            </h2>
+            <motion.p
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-gold text-[10px] tracking-[0.5em] uppercase mb-3 flex items-center gap-3"
+            >
+              <span className="w-6 h-px bg-gold inline-block" />
+              Explorer
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="luxury-heading text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-light text-foreground"
+            >
+              Nos Collections
+            </motion.h2>
           </div>
-          <Link
-            href={`/${locale}/shop`}
-            className="hidden sm:flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-foreground/35 hover:text-gold transition-colors group"
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Tout voir
-            <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
+            <Link
+              href={`/${locale}/shop`}
+              className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-foreground/30 hover:text-gold transition-colors group"
+            >
+              Tout voir
+              <ArrowUpRight size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </motion.div>
         </div>
       </div>
 
-      {/* Bento grid with 3D perspective */}
-      <div className="section-padding pb-20 perspective-1200">
-        <div className="grid grid-cols-2 sm:grid-cols-3 sm:grid-rows-3 gap-2 sm:gap-3 sm:h-[640px] lg:h-[720px]">
+      {/* Categories grid */}
+      <div className="section-padding">
+        {/* Desktop: 5-column row */}
+        <div className="hidden md:grid grid-cols-5 gap-3 lg:gap-4">
           {categories.map((cat, i) => (
-            <Tile key={cat.slug} cat={cat} index={i} locale={locale} />
+            <motion.div
+              key={cat.slug}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                href={`/${locale}/shop?category=${cat.slug}`}
+                className="group block"
+              >
+                {/* Image */}
+                <div className="relative aspect-[2/3] overflow-hidden mb-4">
+                  <Image
+                    src={cat.image}
+                    alt={cat.label}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+                    sizes="20vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  {/* Number */}
+                  <span className="absolute top-3 left-3 luxury-heading text-4xl font-light text-white/[0.07] select-none leading-none">
+                    {cat.num}
+                  </span>
+                  {/* Arrow on hover */}
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+                    <div className="w-7 h-7 bg-gold flex items-center justify-center">
+                      <ArrowUpRight size={12} className="text-black" />
+                    </div>
+                  </div>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-gold/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                </div>
+
+                {/* Label */}
+                <div>
+                  <p className="text-foreground/30 text-[10px] tracking-[0.3em] uppercase mb-1 font-light">
+                    {cat.sub}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-foreground text-sm font-light luxury-heading tracking-wide group-hover:text-gold transition-colors duration-300">
+                      {cat.label}
+                    </h3>
+                  </div>
+                  <div className="h-px w-0 group-hover:w-full bg-gold/40 mt-2 transition-all duration-500 ease-out" />
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
-        <div className="sm:hidden mt-6 text-center">
-          <Link href={`/${locale}/shop`} className="btn-outline inline-block">
-            Voir tout
-          </Link>
+
+        {/* Mobile: 2-column grid */}
+        <div className="grid grid-cols-2 gap-3 md:hidden">
+          {categories.map((cat, i) => (
+            <motion.div
+              key={cat.slug}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
+              className={i === 0 ? "col-span-2" : ""}
+            >
+              <Link href={`/${locale}/shop?category=${cat.slug}`} className="group block">
+                <div className={`relative overflow-hidden mb-3 ${i === 0 ? "aspect-[16/9]" : "aspect-[3/4]"}`}>
+                  <Image src={cat.image} alt={cat.label} fill className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" sizes="50vw" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <p className="text-white/40 text-[9px] tracking-[0.25em] uppercase mb-0.5">{cat.sub}</p>
+                    <p className="text-white text-sm font-light luxury-heading">{cat.label}</p>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
+
     </section>
   );
 }

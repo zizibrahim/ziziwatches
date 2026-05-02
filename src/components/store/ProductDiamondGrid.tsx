@@ -1,17 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale } from "next-intl";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore, type CartProduct } from "@/store/cartStore";
+import { ShoppingBag, ArrowUpRight } from "lucide-react";
 
 interface Product {
   id: string;
@@ -28,52 +23,19 @@ interface Product {
   category?: { nameFr: string; nameEn: string; nameAr: string } | null;
 }
 
-const CARD_STYLES = [
-  { bg: "linear-gradient(135deg, rgba(180,200,255,0.22) 0%, rgba(120,140,220,0.12) 100%)", accent: "rgba(160,180,255,0.55)" },
-  { bg: "linear-gradient(135deg, rgba(255,185,210,0.22) 0%, rgba(220,120,160,0.12) 100%)", accent: "rgba(255,160,200,0.55)" },
-  { bg: "linear-gradient(135deg, rgba(210,185,255,0.22) 0%, rgba(160,120,230,0.12) 100%)", accent: "rgba(200,160,255,0.55)" },
-  { bg: "linear-gradient(135deg, rgba(185,235,215,0.22) 0%, rgba(120,195,160,0.12) 100%)", accent: "rgba(160,220,200,0.55)" },
-  { bg: "linear-gradient(135deg, rgba(255,215,160,0.22) 0%, rgba(220,170,100,0.12) 100%)", accent: "rgba(201,168,76,0.55)" },
-];
-
-function DiamondCard({
-  product,
-  position,
-  locale,
-}: {
-  product: Product;
-  position: number;
-  locale: string;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+function ProductCard({ product, position }: { product: Product; position: number }) {
+  const locale = useLocale();
   const addItem = useCartStore((s) => s.addItem);
 
-  const name =
-    locale === "en" ? product.nameEn : locale === "ar" ? product.nameAr : product.nameFr;
+  const name = locale === "en" ? product.nameEn : locale === "ar" ? product.nameAr : product.nameFr;
+  const catName = product.category
+    ? locale === "en" ? product.category.nameEn : locale === "ar" ? product.category.nameAr : product.category.nameFr
+    : null;
   const image = product.images[0]?.url ?? "/placeholder.jpg";
-  const inStock = product.stock > 0;
-  const style = CARD_STYLES[position % CARD_STYLES.length];
 
-  // 3D tilt on the outer wrapper only
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [12, -12]), { stiffness: 200, damping: 20 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-12, 12]), { stiffness: 200, damping: 20 });
-  const cardScale = useSpring(1, { stiffness: 260, damping: 22 });
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  };
-  const onMouseEnter = () => { setHovered(true); cardScale.set(1.06); };
-  const onMouseLeave = () => { setHovered(false); mx.set(0.5); my.set(0.5); cardScale.set(1); };
-
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!inStock) return;
+    if (product.stock <= 0) return;
     addItem({
       id: product.id, slug: product.slug,
       nameFr: product.nameFr, nameEn: product.nameEn, nameAr: product.nameAr,
@@ -83,194 +45,128 @@ function DiamondCard({
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={onMouseMove}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{ rotateX: rx, rotateY: ry, scale: cardScale }}
-      initial={{ opacity: 0, scale: 0.72, rotateZ: 15 }}
-      whileInView={{ opacity: 1, scale: 1, rotateZ: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.65,
-        delay: Math.min(position * 0.09, 0.45),
-        ease: [0.22, 1, 0.36, 1],
-      }}
-      className="flex flex-col items-center cursor-pointer"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.6, delay: Math.min(position * 0.07, 0.35), ease: [0.22, 1, 0.36, 1] }}
+      className="group"
     >
-      <Link href={`/${locale}/shop/${product.slug}`} className="flex flex-col items-center w-full">
+      <Link href={`/${locale}/shop/${product.slug}`} className="block">
 
-        {/* Outer square — contains the rotated diamond */}
-        <div className="relative w-full aspect-square flex items-center justify-center">
-
-          {/* ── Diamond frame — plain div so overflow:hidden clips correctly ── */}
-          <div
-            style={{
-              position: "relative",
-              width: "70%",
-              height: "70%",
-              borderRadius: "18%",
-              transform: "rotate(45deg)",
-              background: style.bg,
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              overflow: "hidden",
-              boxShadow: hovered
-                ? `0 0 0 2px ${style.accent}, 0 24px 56px rgba(0,0,0,0.35)`
-                : "0 0 0 0px rgba(255,255,255,0), 0 8px 28px rgba(0,0,0,0.18)",
-              transition: "box-shadow 0.35s ease",
-            }}
-          >
-            {/* Counter-rotated image — scale(√2) fills all 4 diamond tips */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                transform: "rotate(-45deg) scale(1.42)",
-              }}
-            >
-              <div style={{ position: "relative", width: "100%", height: "100%" }}>
-                <Image
-                  src={image}
-                  alt={name}
-                  fill
-                  className={`object-cover transition-transform duration-700 ${hovered ? "scale-110" : "scale-100"}`}
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                />
-              </div>
-            </div>
-
-            {/* Inner top highlight */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "linear-gradient(135deg, rgba(255,255,255,0.28) 0%, transparent 35%)",
-                borderRadius: "inherit",
-                pointerEvents: "none",
-              }}
+        {/* Image */}
+        <div className="relative aspect-[3/4] overflow-hidden bg-surface">
+          {image && (
+            <Image
+              src={image}
+              alt={name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.07]"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
+          )}
 
-            {/* Inner border */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                borderRadius: "inherit",
-                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.22)",
-                pointerEvents: "none",
-              }}
-            />
-          </div>
+          {/* Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          {/* Gold shimmer top */}
+          <div className="absolute inset-0 bg-gradient-to-b from-gold/[0.06] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          {/* Corner brackets */}
+          <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-gold/0 group-hover:border-gold/60 transition-all duration-500" />
+          <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-gold/0 group-hover:border-gold/60 transition-all duration-500" />
 
           {/* Badges */}
-          {(product.isNew || product.compareAtPrice) && (
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-              {product.isNew && (
-                <span className="bg-gold text-black text-[7px] font-bold px-2 py-0.5 tracking-widest uppercase">
-                  NEW
-                </span>
-              )}
-              {product.compareAtPrice && (
-                <span className="bg-black/40 backdrop-blur-sm text-white text-[7px] px-2 py-0.5 uppercase tracking-wider">
-                  SALE
-                </span>
-              )}
+          <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+            {product.isNew && (
+              <span className="bg-gold text-black text-[8px] font-bold px-2 py-0.5 tracking-[0.2em] uppercase">
+                New
+              </span>
+            )}
+            {product.compareAtPrice && (
+              <span className="bg-black/50 backdrop-blur-sm text-white text-[8px] px-2 py-0.5 tracking-[0.2em] uppercase">
+                Sale
+              </span>
+            )}
+            {product.stock === 0 && (
+              <span className="bg-foreground/60 text-background text-[8px] px-2 py-0.5 tracking-[0.2em] uppercase">
+                Épuisé
+              </span>
+            )}
+          </div>
+
+          {/* Arrow top right */}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 z-10">
+            <div className="w-7 h-7 bg-gold flex items-center justify-center">
+              <ArrowUpRight size={12} className="text-black" />
             </div>
-          )}
+          </div>
+
+          {/* Quick add — bottom overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <button
+              onClick={handleAdd}
+              disabled={product.stock === 0}
+              className="w-full flex items-center justify-center gap-2 bg-black/60 backdrop-blur-sm text-white text-[9px] tracking-[0.25em] uppercase py-2.5 hover:bg-gold hover:text-black transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              <ShoppingBag size={10} />
+              {product.stock === 0 ? "Épuisé" : "Ajouter au panier"}
+            </button>
+          </div>
         </div>
 
         {/* Info */}
-        <motion.div
-          className="mt-2 text-center px-2 w-full"
-          animate={{ opacity: hovered ? 1 : 0.6, y: hovered ? 0 : 3 }}
-          transition={{ duration: 0.3 }}
-        >
-          <h3 className="luxury-heading text-xs sm:text-sm font-light text-foreground/85 leading-snug truncate">
+        <div className="pt-4 pb-2">
+          {catName && (
+            <p className="text-foreground/30 text-[9px] tracking-[0.35em] uppercase mb-1.5">
+              {catName}
+            </p>
+          )}
+          <h3 className="luxury-heading text-foreground/85 font-light text-sm leading-snug mb-2 group-hover:text-foreground transition-colors duration-300">
             {name}
           </h3>
-          <div className="flex items-center justify-center gap-2 mt-1">
-            <span className="text-gold text-[11px] font-medium">{formatPrice(product.price)}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-gold font-medium text-sm">{formatPrice(product.price)}</span>
             {product.compareAtPrice && (
-              <span className="text-foreground/25 text-[9px] line-through">
+              <span className="text-foreground/25 text-xs line-through">
                 {formatPrice(product.compareAtPrice)}
               </span>
             )}
           </div>
-          <motion.button
-            onClick={handleAddToCart}
-            disabled={!inStock}
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="mt-1.5 text-[8px] tracking-[0.25em] uppercase text-gold/70 hover:text-gold transition-colors disabled:opacity-30"
-          >
-            + Ajouter
-          </motion.button>
-        </motion.div>
+          {/* Gold underline */}
+          <div className="h-px w-0 group-hover:w-8 bg-gold mt-2.5 transition-all duration-500 ease-out" />
+        </div>
+
       </Link>
     </motion.div>
   );
 }
 
-export default function ProductDiamondGrid({ products }: { products: Product[] }) {
-  const locale = useLocale();
-
-  // 2-3-2-3… honeycomb rows
-  // 2-card rows (16.667% padding each side) → each card = 33.33% width
-  // 3-card rows (no padding)               → each card = 33.33% width
-  // Centers of 2-card row sit over the gaps of 3-card row ✓
-  const rows: Product[][] = [];
-  let i = 0;
-  let rowNum = 0;
-  while (i < products.length) {
-    const size = rowNum % 2 === 0 ? 2 : 3;
-    rows.push(products.slice(i, i + size));
-    i += size;
-    rowNum++;
+export default function ProductDiamondGrid({
+  products,
+  singleRow = false,
+}: {
+  products: Product[];
+  singleRow?: boolean;
+}) {
+  if (singleRow) {
+    return (
+      <div className="overflow-x-auto pb-4 -mx-4 px-4 [&::-webkit-scrollbar]:h-[2px] [&::-webkit-scrollbar-thumb]:bg-olive/30 [&::-webkit-scrollbar-track]:bg-transparent">
+        <div className="flex gap-4 sm:gap-5" style={{ width: "max-content" }}>
+          {products.map((product, i) => (
+            <div key={product.id} className="w-[220px] sm:w-[260px] flex-shrink-0">
+              <ProductCard product={product} position={i} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
-  let counter = 0;
-  const rowsWithPos = rows.map((row) =>
-    row.map((product) => ({ product, pos: counter++ }))
-  );
-
-  // Each card is always 1/3 of the container width.
-  // Even rows (2-card) get 1/6 base offset each side for the honeycomb.
-  // Partial rows get extra padding so lone/partial cards don't stretch full-width.
-  const CARD_WIDTH_PCT = 100 / 3; // 33.333%
-
   return (
-    <div className="py-8 max-w-2xl mx-auto">
-      {rowsWithPos.map((row, ri) => {
-        const expectedSize = ri % 2 === 0 ? 2 : 3;
-        const isEvenRow = ri % 2 === 0;
-        // Honeycomb offset for even rows
-        const basePadding = isEvenRow ? CARD_WIDTH_PCT / 2 : 0; // 16.667% for 2-card rows
-        // Extra padding to keep partial rows at the same card width
-        const missingCards = expectedSize - row.length;
-        const extraPadding = missingCards * (CARD_WIDTH_PCT / 2);
-        const totalPadding = basePadding + extraPadding;
-
-        return (
-          <div
-            key={ri}
-            className="flex"
-            style={{
-              marginTop: ri === 0 ? 0 : "-8%",
-              paddingLeft: `${totalPadding}%`,
-              paddingRight: `${totalPadding}%`,
-              position: "relative",
-              zIndex: rowsWithPos.length - ri,
-            }}
-          >
-            {row.map(({ product, pos }) => (
-              <div key={product.id} style={{ flex: "1" }}>
-                <DiamondCard product={product} position={pos} locale={locale} />
-              </div>
-            ))}
-          </div>
-        );
-      })}
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 sm:gap-x-4 md:gap-x-5 gap-y-6 sm:gap-y-8 lg:gap-y-10">
+      {products.map((product, i) => (
+        <ProductCard key={product.id} product={product} position={i} />
+      ))}
     </div>
   );
 }

@@ -4,6 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, X, Trash2, Pencil, Eye, EyeOff } from "lucide-react";
 
+const CATEGORIES = [
+  { value: "general",   label: "General" },
+  { value: "watches",   label: "Watches" },
+  { value: "jewellery", label: "Jewellery" },
+  { value: "shipping",  label: "Shipping" },
+  { value: "orders",    label: "My Order" },
+  { value: "payment",   label: "Payment" },
+  { value: "account",   label: "Customer Account" },
+];
+
 interface Faq {
   id: string;
   questionFr: string;
@@ -12,6 +22,8 @@ interface Faq {
   answerFr: string;
   answerEn: string;
   answerAr: string;
+  category: string;
+  popular: boolean;
   order: number;
   published: boolean;
 }
@@ -37,6 +49,8 @@ function FaqModal({
     answerFr: faq?.answerFr ?? "",
     answerEn: faq?.answerEn ?? "",
     answerAr: faq?.answerAr ?? "",
+    category: faq?.category ?? "general",
+    popular: faq?.popular ?? false,
     order: faq?.order ?? 0,
     published: faq?.published ?? true,
   });
@@ -161,34 +175,65 @@ function FaqModal({
             </div>
           </div>
 
-          <div className="border-t border-border pt-5 grid grid-cols-2 gap-4">
+          <div className="border-t border-border pt-5 space-y-4">
             <div>
-              <label className={labelClass}>Ordre d'affichage</label>
-              <input
-                type="number"
-                value={form.order}
-                onChange={(e) => set("order", parseInt(e.target.value) || 0)}
+              <label className={labelClass}>Catégorie</label>
+              <select
+                value={form.category}
+                onChange={(e) => set("category", e.target.value)}
                 className={inputClass}
-              />
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
             </div>
-            <div className="flex items-end pb-2">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <div
-                  onClick={() => set("published", !form.published)}
-                  className={`w-10 h-5 rounded-full transition-colors relative ${
-                    form.published ? "bg-gold" : "bg-border"
-                  }`}
-                >
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Ordre d'affichage</label>
+                <input
+                  type="number"
+                  value={form.order}
+                  onChange={(e) => set("order", parseInt(e.target.value) || 0)}
+                  className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-3 pt-1">
+                <label className="flex items-center gap-3 cursor-pointer">
                   <div
-                    className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                      form.published ? "translate-x-5" : "translate-x-0.5"
+                    onClick={() => set("published", !form.published)}
+                    className={`w-10 h-5 rounded-full transition-colors relative ${
+                      form.published ? "bg-gold" : "bg-border"
                     }`}
-                  />
-                </div>
-                <span className="text-xs text-foreground/50 tracking-wider uppercase">
-                  {form.published ? "Publié" : "Masqué"}
-                </span>
-              </label>
+                  >
+                    <div
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                        form.published ? "translate-x-5" : "translate-x-0.5"
+                      }`}
+                    />
+                  </div>
+                  <span className="text-xs text-foreground/50 tracking-wider uppercase">
+                    {form.published ? "Publié" : "Masqué"}
+                  </span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <div
+                    onClick={() => set("popular", !form.popular)}
+                    className={`w-10 h-5 rounded-full transition-colors relative ${
+                      form.popular ? "bg-gold" : "bg-border"
+                    }`}
+                  >
+                    <div
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
+                        form.popular ? "translate-x-5" : "translate-x-0.5"
+                      }`}
+                    />
+                  </div>
+                  <span className="text-xs text-foreground/50 tracking-wider uppercase">
+                    {form.popular ? "Populaire" : "Normal"}
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -277,7 +322,7 @@ export default function FaqClient({ faqs }: { faqs: Faq[] }) {
               className="bg-surface border border-border p-5 flex items-start justify-between gap-4 group hover:border-gold/20 transition-colors"
             >
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className="text-foreground/20 text-[10px] font-mono">
                     #{faq.order}
                   </span>
@@ -290,6 +335,16 @@ export default function FaqClient({ faqs }: { faqs: Faq[] }) {
                   >
                     {faq.published ? "Publié" : "Masqué"}
                   </span>
+                  {faq.category && faq.category !== "general" && (
+                    <span className="text-[10px] px-2 py-0.5 uppercase tracking-wider text-gold bg-gold/10">
+                      {faq.category}
+                    </span>
+                  )}
+                  {faq.popular && (
+                    <span className="text-[10px] px-2 py-0.5 uppercase tracking-wider text-blue-400 bg-blue-400/10">
+                      Populaire
+                    </span>
+                  )}
                 </div>
                 <p className="text-foreground/90 text-sm font-medium truncate">
                   {faq.questionFr}

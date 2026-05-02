@@ -37,7 +37,6 @@ export function getLocalizedField(
   const localeMap: Record<string, string> = {
     fr: "Fr",
     en: "En",
-    ar: "Ar",
   };
   const suffix = localeMap[locale] ?? "Fr";
   return obj[`${field}${suffix}`] ?? obj[`${field}Fr`] ?? "";

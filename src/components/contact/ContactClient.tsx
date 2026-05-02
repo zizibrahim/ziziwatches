@@ -149,7 +149,7 @@ export default function ContactClient({ faqs }: { faqs: Faq[] }) {
         </section>
 
         {/* ── Main grid ── */}
-        <section className="section-padding pb-28">
+        <section id="contact-form" className="section-padding pb-28">
           <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-16">
 
             {/* Left — info cards */}
@@ -361,6 +361,8 @@ export default function ContactClient({ faqs }: { faqs: Faq[] }) {
                   <FaqItem key={faq.id} question={faq.question} answer={faq.answer} />
                 ))}
               </div>
+
+
             </div>
           </section>
         )}

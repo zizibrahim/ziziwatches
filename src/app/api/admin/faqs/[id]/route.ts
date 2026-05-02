@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+const VALID_CATEGORIES = ["general", "watches", "jewellery", "shipping", "orders", "payment", "account"];
+
 const schema = z.object({
   questionFr: z.string().min(1).optional(),
   questionEn: z.string().min(1).optional(),
@@ -9,6 +11,8 @@ const schema = z.object({
   answerFr: z.string().min(1).optional(),
   answerEn: z.string().min(1).optional(),
   answerAr: z.string().min(1).optional(),
+  category: z.string().refine((v) => VALID_CATEGORIES.includes(v)).optional(),
+  popular: z.boolean().optional(),
   order: z.number().optional(),
   published: z.boolean().optional(),
 });
@@ -22,7 +26,6 @@ export async function PATCH(
     const data = schema.parse(body);
     const now = new Date().toISOString();
 
-    // Fetch existing record first
     const existing = await prisma.$queryRaw<any[]>`
       SELECT * FROM faqs WHERE id = ${params.id}
     `;
@@ -37,6 +40,8 @@ export async function PATCH(
     const answerFr = data.answerFr ?? current.answerFr;
     const answerEn = data.answerEn ?? current.answerEn;
     const answerAr = data.answerAr ?? current.answerAr;
+    const category = data.category ?? current.category ?? "general";
+    const popular = data.popular !== undefined ? (data.popular ? 1 : 0) : current.popular;
     const order = data.order ?? current.order;
     const published = data.published !== undefined
       ? (data.published ? 1 : 0)
@@ -50,6 +55,8 @@ export async function PATCH(
           answerFr   = ${answerFr},
           answerEn   = ${answerEn},
           answerAr   = ${answerAr},
+          category   = ${category},
+          popular    = ${popular},
           "order"    = ${order},
           published  = ${published},
           updatedAt  = ${now}

@@ -1,223 +1,180 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
 interface ProductImage {
   url: string;
   altFr?: string | null;
 }
 
+function isVideo(url: string) {
+  return /\.(mp4|webm|mov|ogg)(\?.*)?$/i.test(url);
+}
+
 export default function ProductGallery({
   images,
   productName,
+  jumpToIndex,
 }: {
   images: ProductImage[];
   productName: string;
+  jumpToIndex?: number;
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [active, setActive]   = useState(jumpToIndex ?? 0);
+  const [lightbox, setLightbox] = useState(false);
+  const prevJump = useRef(jumpToIndex);
 
-  const activeImage = images[activeIndex];
-
-  const prev = () => setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1));
-  const next = () => setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1));
-
-  if (!images.length) {
-    return (
-      <div className="aspect-square bg-surface border border-border flex items-center justify-center text-foreground/20">
-        <span className="text-xs tracking-wider uppercase">No image</span>
-      </div>
-    );
+  if (jumpToIndex !== undefined && jumpToIndex !== prevJump.current) {
+    prevJump.current = jumpToIndex;
+    setActive(jumpToIndex);
   }
+
+  if (!images.length) return (
+    <div className="aspect-square bg-surface border border-border flex items-center justify-center text-foreground/20 text-xs tracking-wider uppercase">
+      No image
+    </div>
+  );
+
+  const prev = () => setActive(i => i === 0 ? images.length - 1 : i - 1);
+  const next = () => setActive(i => i === images.length - 1 ? 0 : i + 1);
+  const current = images[active];
 
   return (
     <>
-      <div className="space-y-3">
-        {/* Main image — diamond frame */}
+      <div className="flex flex-col gap-3">
+
+        {/* ── Main image ── */}
         <div
-          className="relative aspect-square flex items-center justify-center cursor-zoom-in"
-          onClick={() => setLightboxOpen(true)}
+          className="relative aspect-square overflow-hidden bg-surface group cursor-zoom-in"
+          onClick={() => setLightbox(true)}
         >
-          {/* Diamond container */}
-          <div
-            className="relative overflow-hidden"
-            style={{
-              width: "82%",
-              height: "82%",
-              borderRadius: "18%",
-              transform: "rotate(45deg)",
-              background: "linear-gradient(135deg, rgba(180,200,255,0.18) 0%, rgba(120,140,220,0.10) 100%)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              boxShadow: "0 24px 72px rgba(0,0,0,0.20), inset 0 0 0 1px rgba(255,255,255,0.20)",
-            }}
-          >
-            {/* Counter-rotated image */}
-            <div className="absolute inset-0" style={{ transform: "rotate(-45deg) scale(1.42)" }}>
-              <div className="relative w-full h-full">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeIndex}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={activeImage.url}
-                      alt={activeImage.altFr ?? productName}
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-            {/* Inner highlight */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: "linear-gradient(135deg, rgba(255,255,255,0.22) 0%, transparent 35%)",
-                borderRadius: "inherit",
-              }}
-            />
-            {/* Inner border */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{ borderRadius: "inherit", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.18)" }}
-            />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0"
+            >
+              {isVideo(current.url) ? (
+                <video src={current.url} autoPlay loop muted playsInline
+                  className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <Image
+                  src={current.url}
+                  alt={current.altFr ?? productName}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Zoom hint */}
+          <div className="absolute bottom-3 right-3 bg-white/80 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <ZoomIn size={14} className="text-foreground/60" />
           </div>
 
-          {/* Arrow nav — positioned on the sides of the outer square */}
+          {/* Arrows */}
           {images.length > 1 && (
             <>
               <button
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                className="absolute left-0 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground/60 hover:text-foreground p-2 transition-colors"
+                onClick={e => { e.stopPropagation(); prev(); }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white flex items-center justify-center shadow-sm transition-all opacity-0 group-hover:opacity-100"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={18} className="text-foreground/70" />
               </button>
               <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background border border-border text-foreground/60 hover:text-foreground p-2 transition-colors"
+                onClick={e => { e.stopPropagation(); next(); }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-white/80 hover:bg-white flex items-center justify-center shadow-sm transition-all opacity-0 group-hover:opacity-100"
               >
-                <ChevronRight size={16} />
+                <ChevronRight size={18} className="text-foreground/70" />
               </button>
             </>
           )}
-
-          {/* Zoom hint */}
-          <div className="absolute bottom-2 right-1/2 translate-x-1/2 bg-black/40 p-1.5 opacity-50 hover:opacity-100 transition-opacity pointer-events-none">
-            <ZoomIn size={12} className="text-white" />
-          </div>
         </div>
 
-        {/* Thumbnails */}
+        {/* ── Thumbnail strip ── */}
         {images.length > 1 && (
-          <div className="grid grid-cols-4 gap-2">
+          <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-[2px] [&::-webkit-scrollbar-thumb]:bg-olive/30">
             {images.map((img, i) => (
               <button
                 key={i}
-                onClick={() => setActiveIndex(i)}
-                className={`relative aspect-square bg-surface overflow-hidden border-2 transition-colors ${
-                  i === activeIndex ? "border-gold" : "border-transparent hover:border-border"
+                onClick={() => setActive(i)}
+                className={`relative shrink-0 w-16 h-16 overflow-hidden border-2 transition-all duration-200 ${
+                  i === active
+                    ? "border-olive"
+                    : "border-transparent hover:border-border opacity-60 hover:opacity-100"
                 }`}
               >
-                <Image
-                  src={img.url}
-                  alt={img.altFr ?? productName}
-                  fill
-                  className="object-cover"
-                  sizes="25vw"
-                />
+                {isVideo(img.url) ? (
+                  <video src={img.url} muted className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <Image src={img.url} alt={img.altFr ?? productName} fill className="object-cover" sizes="64px" />
+                )}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      {/* Lightbox */}
+      {/* ── Lightbox ── */}
       <AnimatePresence>
-        {lightboxOpen && (
+        {lightbox && !isVideo(current.url) && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setLightboxOpen(false)}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-black/92"
+            onClick={() => setLightbox(false)}
           >
-            {/* Close */}
-            <button
-              className="absolute top-4 right-4 text-white/60 hover:text-white z-10"
-              onClick={() => setLightboxOpen(false)}
-            >
+            <button onClick={() => setLightbox(false)}
+              className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors z-10">
               <X size={24} />
             </button>
 
-            {/* Image */}
             <motion.div
-              className="relative w-full max-w-3xl max-h-[85vh] mx-4 aspect-square"
-              initial={{ scale: 0.92, opacity: 0 }}
+              initial={{ scale: 0.94, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.94, opacity: 0 }}
+              exit={{ scale: 0.96, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-xl mx-6"
+              style={{ maxHeight: "88vh", aspectRatio: "1/1" }}
+              onClick={e => e.stopPropagation()}
             >
               <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={activeImage.url}
-                    alt={activeImage.altFr ?? productName}
-                    fill
-                    className="object-contain"
-                    sizes="90vw"
-                  />
+                <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15 }} className="absolute inset-0">
+                  <Image src={current.url} alt={current.altFr ?? productName} fill className="object-contain" sizes="90vw" />
                 </motion.div>
               </AnimatePresence>
             </motion.div>
 
-            {/* Lightbox arrows */}
             {images.length > 1 && (
               <>
-                <button
-                  onClick={(e) => { e.stopPropagation(); prev(); }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 transition-colors"
-                >
+                <button onClick={e => { e.stopPropagation(); prev(); }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 transition-colors">
                   <ChevronLeft size={20} />
                 </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); next(); }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 transition-colors"
-                >
+                <button onClick={e => { e.stopPropagation(); next(); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white p-3 transition-colors">
                   <ChevronRight size={20} />
                 </button>
+                <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                  {images.map((_, i) => (
+                    <button key={i} onClick={e => { e.stopPropagation(); setActive(i); }}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === active ? "bg-white" : "bg-white/30 hover:bg-white/60"}`}
+                    />
+                  ))}
+                </div>
               </>
-            )}
-
-            {/* Dot indicators */}
-            {images.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={(e) => { e.stopPropagation(); setActiveIndex(i); }}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors ${i === activeIndex ? "bg-gold" : "bg-white/30"}`}
-                  />
-                ))}
-              </div>
             )}
           </motion.div>
         )}

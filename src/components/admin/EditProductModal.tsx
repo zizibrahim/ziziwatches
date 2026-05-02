@@ -3,12 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, Pencil, Sparkles, Loader2 } from "lucide-react";
-import ImageUpload from "./ImageUpload";
+import MediaGalleryUpload, { type MediaItem } from "./MediaGalleryUpload";
+import VariantEditor, { type VariantData } from "./VariantEditor";
+import AttributeEditor, { type AttributeData } from "./AttributeEditor";
 
 interface Category {
   id: string;
   nameFr: string;
 }
+
+const PAGE_TYPES = [
+  { value: "montres",  label: "Montres",  icon: "⌚" },
+  { value: "bijoux",   label: "Bijoux",   icon: "💍" },
+  { value: "packs",    label: "Packs",    icon: "📦" },
+  { value: "cadeaux",  label: "Cadeaux",  icon: "🎁" },
+];
 
 interface Product {
   id: string;
@@ -23,10 +32,14 @@ interface Product {
   coffretPrice: number | null;
   stock: number;
   categoryId?: string | null;
+  categorySlug?: string | null;
   status: string;
   featured: boolean;
   isNew: boolean;
-  imageUrl?: string | null;
+  images: MediaItem[];
+  variants: VariantData[];
+  attributes: AttributeData[];
+  tags?: string[];
 }
 
 export default function EditProductModal({
@@ -41,6 +54,15 @@ export default function EditProductModal({
   const [aiLoading, setAiLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const [images, setImages] = useState<MediaItem[]>(product.images);
+  const [variants, setVariants] = useState<VariantData[]>(product.variants);
+  const [attributes, setAttributes] = useState<AttributeData[]>(product.attributes);
+  const [tags, setTags] = useState<string[]>(product.tags ?? []);
+  const [pageType, setPageType] = useState(product.categorySlug ?? "montres");
+
+  const toggleTag = (tag: string) =>
+    setTags((prev) => prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]);
 
   const [form, setForm] = useState({
     nameFr: product.nameFr,
@@ -57,7 +79,6 @@ export default function EditProductModal({
     status: product.status,
     featured: product.featured,
     isNew: product.isNew,
-    imageUrl: product.imageUrl ?? "",
   });
 
   const set = (k: string, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
@@ -106,11 +127,20 @@ export default function EditProductModal({
         compareAtPrice: form.compareAtPrice ? parseFloat(form.compareAtPrice) : null,
         coffretPrice: form.coffretPrice ? parseFloat(form.coffretPrice) : null,
         stock: parseInt(form.stock),
-        categoryId: form.categoryId,
+        pageType,
         status: form.status,
         featured: form.featured,
         isNew: form.isNew,
-        imageUrl: form.imageUrl || null,
+        tags,
+        images,
+        variants: variants.map((v) => ({
+          id: v.id,
+          colorName: v.colorName,
+          colorHex: v.colorHex,
+          stock: v.stock,
+          images: v.images,
+        })),
+        attributes,
       }),
     });
     setLoading(false);
@@ -195,13 +225,46 @@ export default function EditProductModal({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className={labelClass}>Catégorie</label>
-                  <select value={form.categoryId ?? ""} onChange={(e) => set("categoryId", e.target.value)} className={inputClass}>
-                    {categories.map((c) => <option key={c.id} value={c.id}>{c.nameFr}</option>)}
-                  </select>
+              {/* ── Page selector ── */}
+              <div>
+                <label className={labelClass}>Page *</label>
+                <div className="grid grid-cols-4 gap-2 mt-1">
+                  {PAGE_TYPES.map((p) => (
+                    <button
+                      key={p.value}
+                      type="button"
+                      onClick={() => setPageType(p.value)}
+                      className={`flex flex-col items-center gap-1.5 py-3 border text-xs transition-all ${
+                        pageType === p.value
+                          ? "border-olive bg-olive/5 text-olive"
+                          : "border-border text-foreground/40 hover:border-foreground/30 hover:text-foreground/60"
+                      }`}
+                    >
+                      <span className="text-xl">{p.icon}</span>
+                      <span className="tracking-wide uppercase">{p.label}</span>
+                    </button>
+                  ))}
                 </div>
+              </div>
+
+              {/* ── Gender tags ── */}
+              <div>
+                <label className={labelClass}>Genre</label>
+                <div className="flex gap-4 mt-1">
+                  {[
+                    { tag: "homme", label: "Homme" },
+                    { tag: "femme", label: "Femme" },
+                    { tag: "couple", label: "Couple" },
+                  ].map(({ tag, label }) => (
+                    <label key={tag} className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" checked={tags.includes(tag)} onChange={() => toggleTag(tag)} className="w-4 h-4 accent-gold" />
+                      <span className="text-foreground/70 text-sm">{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={labelClass}>Statut</label>
                   <select value={form.status} onChange={(e) => set("status", e.target.value)} className={inputClass}>
@@ -213,8 +276,26 @@ export default function EditProductModal({
               </div>
 
               <div>
-                <label className={labelClass}>Image du produit</label>
-                <ImageUpload value={form.imageUrl} onChange={(url) => set("imageUrl", url)} />
+                <label className={labelClass}>Photos & vidéos (générales)</label>
+                <MediaGalleryUpload value={images} onChange={setImages} />
+              </div>
+
+              {/* Variantes */}
+              <div className="border-t border-border pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <label className={labelClass + " mb-0"}>Variantes de couleur</label>
+                  <span className="text-foreground/25 text-[10px]">optionnel</span>
+                </div>
+                <VariantEditor value={variants} onChange={setVariants} />
+              </div>
+
+              {/* Caractéristiques */}
+              <div className="border-t border-border pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <label className={labelClass + " mb-0"}>Caractéristiques techniques</label>
+                  <span className="text-foreground/25 text-[10px]">optionnel</span>
+                </div>
+                <AttributeEditor value={attributes} onChange={setAttributes} />
               </div>
 
               <div className="flex gap-6">

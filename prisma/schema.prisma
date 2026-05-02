@@ -87,11 +87,14 @@ model Product {
   images           ProductImage[]
   attributes       ProductAttribute[]
   tags             ProductTag[]
+  variants         ProductVariant[]
   orderItems       OrderItem[]
   cartItems        CartItem[]
+  reviews          Review[]
   status           String   @default("ACTIVE")
   featured         Boolean  @default(false)
   isNew            Boolean  @default(false)
+  isBestseller     Boolean  @default(false)
   brand            String   @default("Ziziwatches")
   coffretPrice     Float?   // if set, customer can upgrade to gift box for this extra price
   createdAt        DateTime @default(now())
@@ -136,6 +139,29 @@ model ProductTag {
   @@map("product_tags")
 }
 
+model ProductVariant {
+  id        String               @id @default(cuid())
+  productId String
+  colorName String
+  colorHex  String?
+  stock     Int                  @default(0)
+  position  Int                  @default(0)
+  product   Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images    ProductVariantImage[]
+
+  @@map("product_variants")
+}
+
+model ProductVariantImage {
+  id        String         @id @default(cuid())
+  variantId String
+  url       String
+  position  Int            @default(0)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@map("product_variant_images")
+}
+
 // ─── CART ─────────────────────────────────────────────────────────────────────
 
 model CartItem {
@@ -174,6 +200,7 @@ model Order {
   address         Address? @relation(fields: [addressId], references: [id])
   items           OrderItem[]
   emailLogs       EmailLog[]
+  reviews         Review[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -191,6 +218,7 @@ model OrderItem {
   total           Float
   packaging       String  @default("simple") // "simple" | "coffret"
   packagingPrice  Float   @default(0)
+  variantColor    String?
   order           Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product         Product @relation(fields: [productId], references: [id])
 
@@ -256,6 +284,8 @@ model Faq {
   answerFr   String
   answerEn   String
   answerAr   String
+  category   String   @default("general")
+  popular    Boolean  @default(false)
   order      Int      @default(0)
   published  Boolean  @default(true)
   createdAt  DateTime @default(now())
@@ -273,4 +303,53 @@ model Setting {
   updatedAt DateTime @updatedAt
 
   @@map("settings")
+}
+
+// ─── VIP SIGNUPS ──────────────────────────────────────────────────────────────
+
+model VipSignup {
+  id        String   @id @default(cuid())
+  name      String
+  city      String
+  contact   String   // phone or email
+  createdAt DateTime @default(now())
+
+  @@map("vip_signups")
+}
+
+// ─── SOCIAL PROOF SCREENSHOTS ─────────────────────────────────────────────────
+
+model SocialProofImage {
+  id        String   @id @default(cuid())
+  url       String
+  platform  String   @default("whatsapp") // "whatsapp" | "instagram"
+  caption   String?
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("social_proof_images")
+}
+
+// ─── REVIEWS ──────────────────────────────────────────────────────────────────
+
+// status flow: AWAITING (link sent, not yet submitted) → PENDING (submitted) → APPROVED | REJECTED
+model Review {
+  id            String    @id @default(cuid())
+  token         String    @unique
+  tokenUsed     Boolean   @default(false)
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+  productId     String?
+  product       Product?  @relation(fields: [productId], references: [id])
+  customerName  String
+  customerPhone String?
+  city          String?
+  rating        Int?
+  comment       String?
+  status        String    @default("AWAITING")
+  submittedAt   DateTime?
+  approvedAt    DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@map("reviews")
 }

@@ -25,6 +25,12 @@ const config: Config = {
           dark: "#a88630",
           muted: "rgba(201,168,76,0.12)",
         },
+        // Olive accent
+        olive: {
+          DEFAULT: "#4a5240",
+          light: "#6b7560",
+          dark: "#333a2c",
+        },
       },
       fontFamily: {
         serif: ["var(--font-cormorant)", "Georgia", "serif"],

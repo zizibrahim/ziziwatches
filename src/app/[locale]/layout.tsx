@@ -7,6 +7,7 @@ import { locales, type Locale } from "@/i18n";
 import ChatWidget from "@/components/ai/ChatWidget";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import PageTransition from "@/components/layout/PageTransition";
+import SplashScreen from "@/components/layout/SplashScreen";
 import "../globals.css";
 
 const inter = Inter({
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
         <div className="grain" aria-hidden="true" />
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
+            <SplashScreen />
             <PageTransition>{children}</PageTransition>
             <ChatWidget />
           </ThemeProvider>

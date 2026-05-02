@@ -2,33 +2,32 @@
 
 const items = [
   "Qualité Premium",
-  "★",
-  "Livraison Maroc",
-  "★",
-  "Nouveautés",
-  "★",
-  "Paiement à la livraison",
-  "★",
+  "◆",
+  "Livraison Gratuite",
+  "◆",
+  "Nouveautés 2026",
+  "◆",
+  "Paiement à la Livraison",
+  "◆",
   "Collections Exclusives",
-  "★",
+  "◆",
   "Service Client",
-  "★",
+  "◆",
 ];
 
-// Duplicate so the loop is seamless
 const repeated = [...items, ...items];
 
 export default function MarqueeSection() {
   return (
-    <div className="overflow-hidden border-y border-gold/15 bg-[#080808] py-4 select-none">
-      <div className="flex animate-marquee whitespace-nowrap gap-10">
+    <div className="overflow-hidden border-y border-gold/10 bg-[#4a5240] py-3.5 select-none">
+      <div className="flex animate-marquee whitespace-nowrap gap-8">
         {repeated.map((item, i) => (
           <span
             key={i}
             className={
-              item === "★"
-                ? "text-gold text-xs flex-shrink-0"
-                : "text-white/30 text-[11px] tracking-[0.3em] uppercase flex-shrink-0 font-light"
+              item === "◆"
+                ? "text-gold/40 text-[8px] flex-shrink-0 leading-none"
+                : "text-white/20 text-[10px] tracking-[0.4em] uppercase flex-shrink-0 font-light"
             }
           >
             {item}

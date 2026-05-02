@@ -10,8 +10,7 @@ export const metadata: Metadata = {
 const highlights = [
   { icon: Truck, label: "Livraison gratuite", sub: "Partout au Maroc" },
   { icon: Banknote, label: "Paiement à la livraison", sub: "En espèces uniquement" },
-  { icon: RotateCcw, label: "Retour sous 7 jours", sub: "Produit défectueux" },
-  { icon: Phone, label: "Support WhatsApp", sub: "0717728154" },
+{ icon: Phone, label: "Support WhatsApp", sub: "0717728154" },
 ];
 
 const articles = [
@@ -73,7 +72,7 @@ const articles = [
           Le paiement s'effectue exclusivement <span className="text-foreground/90 font-medium">à la livraison</span> (paiement
           en espèces). Aucun paiement en ligne n'est requis pour passer commande.
         </p>
-        <div className="inline-flex items-center gap-2 bg-gold/5 border border-gold/20 px-3 py-2 text-xs text-gold">
+        <div className="inline-flex items-center gap-2 bg-olive/5 border border-olive/20 px-3 py-2 text-xs text-olive">
           <Banknote size={12} />
           Paiement à la livraison — 100% sécurisé
         </div>
@@ -156,10 +155,10 @@ const articles = [
           href="mailto:asmaezouggari08@gmail.com"
           className="flex items-center gap-3 group"
         >
-          <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
-            <Mail size={13} className="text-gold" />
+          <div className="w-8 h-8 rounded-full bg-olive/10 border border-olive/20 flex items-center justify-center">
+            <Mail size={13} className="text-olive" />
           </div>
-          <span className="text-foreground/60 text-sm group-hover:text-gold transition-colors">
+          <span className="text-foreground/60 text-sm group-hover:text-olive transition-colors">
             asmaezouggari08@gmail.com
           </span>
         </a>
@@ -167,10 +166,10 @@ const articles = [
           href="tel:0717728154"
           className="flex items-center gap-3 group"
         >
-          <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
-            <Phone size={13} className="text-gold" />
+          <div className="w-8 h-8 rounded-full bg-olive/10 border border-olive/20 flex items-center justify-center">
+            <Phone size={13} className="text-olive" />
           </div>
-          <span className="text-foreground/60 text-sm group-hover:text-gold transition-colors font-mono">
+          <span className="text-foreground/60 text-sm group-hover:text-olive transition-colors font-mono">
             0717728154
           </span>
         </a>
@@ -188,22 +187,22 @@ export default function CgvPage() {
         {/* ── Hero ── */}
         <div className="relative pt-28 pb-16 border-b border-border overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-gold/40 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-olive/30 to-transparent" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-olive/40 to-transparent" />
           </div>
 
           <div className="section-padding text-center">
             <div className="inline-flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-gold/50" />
-              <p className="text-gold text-[10px] tracking-[0.5em] uppercase font-medium">
+              <div className="w-8 h-px bg-olive/50" />
+              <p className="text-olive text-[10px] tracking-[0.5em] uppercase font-medium">
                 Ziziwatches · Légal
               </p>
-              <div className="w-8 h-px bg-gold/50" />
+              <div className="w-8 h-px bg-olive/50" />
             </div>
             <h1 className="luxury-heading text-5xl md:text-6xl font-light text-foreground mb-4">
               Conditions Générales
               <br />
-              <span className="gold-text">de Vente</span>
+              <span className="text-olive">de Vente</span>
             </h1>
             <p className="text-foreground/40 text-sm mt-4 max-w-md mx-auto leading-relaxed">
               Tout ce que vous devez savoir sur nos conditions de vente,
@@ -218,11 +217,11 @@ export default function CgvPage() {
         {/* ── Key highlights ── */}
         <div className="border-b border-border bg-surface/50">
           <div className="section-padding py-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex flex-wrap justify-center gap-16 md:gap-28">
               {highlights.map(({ icon: Icon, label, sub }) => (
                 <div key={label} className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
-                    <Icon size={15} className="text-gold" strokeWidth={1.5} />
+                  <div className="w-9 h-9 rounded-full bg-olive/10 border border-olive/20 flex items-center justify-center shrink-0">
+                    <Icon size={15} className="text-olive" strokeWidth={1.5} />
                   </div>
                   <div>
                     <p className="text-foreground/80 text-xs font-medium leading-tight">{label}</p>
@@ -248,20 +247,20 @@ export default function CgvPage() {
                 >
                   {/* Number + icon */}
                   <div className="shrink-0 flex flex-col items-center gap-3 pt-1">
-                    <span className="luxury-heading text-3xl font-light text-gold/20 leading-none select-none">
+                    <span className="luxury-heading text-3xl font-light text-olive/20 leading-none select-none">
                       {article.number}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
-                      <Icon size={14} className="text-gold" strokeWidth={1.5} />
+                    <div className="w-8 h-8 rounded-full bg-olive/10 border border-olive/20 flex items-center justify-center">
+                      <Icon size={14} className="text-olive" strokeWidth={1.5} />
                     </div>
                     {i < articles.length - 1 && (
-                      <div className="w-px flex-1 bg-gradient-to-b from-gold/20 to-transparent min-h-[2rem]" />
+                      <div className="w-px flex-1 bg-gradient-to-b from-olive/20 to-transparent min-h-[2rem]" />
                     )}
                   </div>
 
                   {/* Text */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-gold text-[10px] tracking-[0.3em] uppercase mb-1.5">
+                    <p className="text-olive text-[10px] tracking-[0.3em] uppercase mb-1.5">
                       Article {article.number}
                     </p>
                     <h2 className="text-foreground text-base font-medium tracking-wide mb-4">
@@ -277,20 +276,20 @@ export default function CgvPage() {
           {/* Bottom CTA */}
           <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="border border-border bg-surface p-6">
-              <p className="text-gold text-[10px] tracking-[0.4em] uppercase mb-2">Besoin d'aide ?</p>
+              <p className="text-olive text-[10px] tracking-[0.4em] uppercase mb-2">Besoin d'aide ?</p>
               <p className="text-foreground/70 text-sm mb-4 leading-relaxed">
                 Notre équipe est disponible pour répondre à toutes vos questions.
               </p>
               <a
                 href="mailto:asmaezouggari08@gmail.com"
-                className="btn-gold inline-flex items-center gap-2 text-xs"
+                className="btn-olive inline-flex items-center gap-2"
               >
                 <Mail size={12} />
                 Envoyer un email
               </a>
             </div>
             <div className="border border-border bg-surface p-6">
-              <p className="text-gold text-[10px] tracking-[0.4em] uppercase mb-2">WhatsApp</p>
+              <p className="text-olive text-[10px] tracking-[0.4em] uppercase mb-2">WhatsApp</p>
               <p className="text-foreground/70 text-sm mb-4 leading-relaxed">
                 Réponse rapide via WhatsApp du lundi au samedi.
               </p>

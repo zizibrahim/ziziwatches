@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AdminLogout from "./AdminLogout";
 import {
-  LayoutDashboard, ShoppingBag, Package, Users, Briefcase,
-  LogOut, Menu, X, HelpCircle, Tag,
+  LayoutDashboard, ShoppingBag, Package, Users,
+  LogOut, Menu, X, HelpCircle, Tag, Settings, Star, Crown, Trophy, Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,18 +14,24 @@ const navItems = [
   { href: "", label: "Dashboard", icon: LayoutDashboard },
   { href: "/orders", label: "Commandes", icon: ShoppingBag },
   { href: "/products", label: "Produits", icon: Package },
+  { href: "/bestsellers", label: "Bestsellers", icon: Trophy },
+  { href: "/new-arrivals", label: "Nouveautés", icon: Sparkles },
   { href: "/categories", label: "Catégories", icon: Tag },
   { href: "/customers", label: "Clients", icon: Users },
-  { href: "/projects", label: "Projets", icon: Briefcase },
+  { href: "/vip", label: "Membres VIP", icon: Crown },
+  { href: "/reviews", label: "Avis clients", icon: Star },
   { href: "/faqs", label: "FAQ", icon: HelpCircle },
+  { href: "/settings", label: "Paramètres", icon: Settings },
 ];
 
 function SidebarContent({
   locale,
   onClose,
+  pendingOrders,
 }: {
   locale: string;
   onClose?: () => void;
+  pendingOrders: number;
 }) {
   const pathname = usePathname();
 
@@ -66,7 +72,10 @@ function SidebarContent({
               }`}
             >
               <Icon size={15} strokeWidth={1.5} className={active ? "text-gold" : "group-hover:text-gold transition-colors"} />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.href === "/orders" && pendingOrders > 0 && (
+                <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
+              )}
             </Link>
           );
         })}
@@ -88,14 +97,14 @@ function SidebarContent({
   );
 }
 
-export default function AdminSidebar({ locale }: { locale: string }) {
+export default function AdminSidebar({ locale, pendingOrders }: { locale: string; pendingOrders: number }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex w-56 shrink-0 bg-surface border-r border-border flex-col">
-        <SidebarContent locale={locale} />
+        <SidebarContent locale={locale} pendingOrders={pendingOrders} />
       </aside>
 
       {/* Mobile top bar */}
@@ -128,7 +137,7 @@ export default function AdminSidebar({ locale }: { locale: string }) {
               transition={{ type: "tween", duration: 0.25 }}
               className="lg:hidden fixed top-0 left-0 bottom-0 z-50 w-64 bg-surface border-r border-border flex flex-col"
             >
-              <SidebarContent locale={locale} onClose={() => setMobileOpen(false)} />
+              <SidebarContent locale={locale} pendingOrders={pendingOrders} onClose={() => setMobileOpen(false)} />
             </motion.aside>
           </>
         )}

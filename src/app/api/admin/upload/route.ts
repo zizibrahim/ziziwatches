@@ -12,12 +12,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "Fichier invalide." }, { status: 400 });
+    const isImage = file.type.startsWith("image/");
+    const isVideo = file.type.startsWith("video/");
+
+    if (!isImage && !isVideo) {
+      return NextResponse.json({ error: "Fichier invalide. Image ou vidéo uniquement." }, { status: 400 });
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      return NextResponse.json({ error: "Image trop lourde (max 10 Mo)." }, { status: 400 });
+    const maxSize = isVideo ? 200 * 1024 * 1024 : 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: isVideo ? "Vidéo trop lourde (max 200 Mo)." : "Image trop lourde (max 10 Mo)." },
+        { status: 400 }
+      );
     }
 
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";

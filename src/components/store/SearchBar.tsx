@@ -10,6 +10,7 @@ export default function SearchBar({ locale }: { locale: string }) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [value, setValue] = useState(searchParams.get("q") ?? "");
+  const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = (term: string) => {
@@ -31,29 +32,52 @@ export default function SearchBar({ locale }: { locale: string }) {
   };
 
   return (
-    <div className="relative w-full sm:w-72">
-      <Search
-        size={14}
-        className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/30 pointer-events-none"
+    <div
+      className={`relative flex items-center w-full sm:w-80 transition-all duration-300 ${
+        focused ? "sm:w-96" : ""
+      }`}
+    >
+      {/* Gold accent line on focus */}
+      <div
+        className={`absolute bottom-0 left-0 h-px bg-gold transition-all duration-300 ${
+          focused ? "w-full" : "w-0"
+        }`}
       />
+
+      {/* Search icon */}
+      <div className="absolute left-0 flex items-center pointer-events-none">
+        <Search
+          size={13}
+          className={`transition-colors duration-200 ${
+            focused ? "text-gold" : "text-foreground/25"
+          }`}
+        />
+      </div>
+
       <input
         ref={inputRef}
         type="text"
         value={value}
         onChange={(e) => handleSearch(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder="Rechercher une montre..."
-        className="w-full bg-surface border border-border text-foreground text-sm pl-9 pr-8 py-2 focus:outline-none focus:border-gold transition-colors placeholder:text-foreground/30"
+        className="w-full bg-transparent border-b border-border/40 text-foreground text-sm pl-6 pr-7 py-2.5 focus:outline-none transition-colors placeholder:text-foreground/20 placeholder:tracking-wide"
       />
-      {value && (
+
+      {/* Clear button */}
+      {value && !isPending && (
         <button
           onClick={clear}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground transition-colors"
+          className="absolute right-0 text-foreground/25 hover:text-gold transition-colors"
         >
           <X size={13} />
         </button>
       )}
+
+      {/* Spinner */}
       {isPending && (
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 border border-gold border-t-transparent rounded-full animate-spin" />
+        <div className="absolute right-0 w-3 h-3 border border-gold border-t-transparent rounded-full animate-spin" />
       )}
     </div>
   );

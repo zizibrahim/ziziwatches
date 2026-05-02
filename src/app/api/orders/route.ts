@@ -11,7 +11,7 @@ const OrderSchema = z.object({
   email: z.string().email().optional().or(z.literal("")),
   street: z.string().min(5),
   city: z.string().min(2),
-  wilaya: z.string().min(2),
+  wilaya: z.string().optional().default(""),
   notes: z.string().optional(),
   locale: z.string().default("fr"),
   items: z.array(
@@ -19,6 +19,7 @@ const OrderSchema = z.object({
       productId: z.string(),
       quantity: z.number().min(1),
       packaging: z.enum(["simple", "coffret"]).default("simple"),
+      variantColor: z.string().optional().nullable(),
     })
   ).min(1),
 });
@@ -29,7 +30,7 @@ export async function POST(req: NextRequest) {
     const data = OrderSchema.parse(body);
 
     // Fetch product prices from DB (never trust client prices)
-    const productIds = data.items.map((i) => i.productId);
+    const productIds = Array.from(new Set(data.items.map((i) => i.productId)));
     const products = await prisma.product.findMany({
       where: { id: { in: productIds }, status: "ACTIVE" },
     });
@@ -55,6 +56,7 @@ export async function POST(req: NextRequest) {
         total: unitPrice * item.quantity,
         packaging: item.packaging,
         packagingPrice,
+        variantColor: item.variantColor ?? null,
       };
     });
 

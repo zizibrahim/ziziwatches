@@ -21,7 +21,7 @@ const sections = [
         <ul className="space-y-2.5">
           {["Nom et prénom", "Numéro de téléphone", "Adresse de livraison", "Ville et région"].map((item) => (
             <li key={item} className="flex items-center gap-3">
-              <span className="w-1 h-1 rounded-full bg-gold shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-olive shrink-0" />
               <span className="text-foreground/70 text-sm">{item}</span>
             </li>
           ))}
@@ -45,7 +45,7 @@ const sections = [
             "Vous contacter en cas de besoin concernant votre commande",
           ].map((item) => (
             <li key={item} className="flex items-center gap-3">
-              <span className="w-1 h-1 rounded-full bg-gold shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-olive shrink-0" />
               <span className="text-foreground/70 text-sm">{item}</span>
             </li>
           ))}
@@ -100,7 +100,7 @@ const sections = [
         </p>
         <a
           href="mailto:asmaezouggari08@gmail.com"
-          className="inline-flex items-center gap-2 text-gold text-sm hover:underline"
+          className="inline-flex items-center gap-2 text-olive text-sm hover:underline"
         >
           <Mail size={13} />
           asmaezouggari08@gmail.com
@@ -110,7 +110,7 @@ const sections = [
   },
 ];
 
-export default function PrivacyPage() {
+export default function PrivacyPage({ params }: { params: { locale: string } }) {
   return (
     <>
       <Header />
@@ -118,24 +118,24 @@ export default function PrivacyPage() {
 
         {/* ── Hero ── */}
         <div className="relative pt-28 pb-16 border-b border-border overflow-hidden">
-          {/* Decorative gold lines */}
+          {/* Decorative olive lines */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-gold/40 to-transparent" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-olive/30 to-transparent" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-24 bg-gradient-to-b from-olive/40 to-transparent" />
           </div>
 
           <div className="section-padding text-center">
             <div className="inline-flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-gold/50" />
-              <p className="text-gold text-[10px] tracking-[0.5em] uppercase font-medium">
+              <div className="w-8 h-px bg-olive/50" />
+              <p className="text-olive text-[10px] tracking-[0.5em] uppercase font-medium">
                 Ziziwatches · Légal
               </p>
-              <div className="w-8 h-px bg-gold/50" />
+              <div className="w-8 h-px bg-olive/50" />
             </div>
             <h1 className="luxury-heading text-5xl md:text-6xl font-light text-foreground mb-4">
               Politique de
               <br />
-              <span className="gold-text">Confidentialité</span>
+              <span className="text-olive">Confidentialité</span>
             </h1>
             <p className="text-foreground/40 text-sm mt-4 max-w-md mx-auto leading-relaxed">
               Nous respectons votre vie privée. Voici comment nous collectons,
@@ -151,8 +151,8 @@ export default function PrivacyPage() {
         <div className="section-padding py-16 max-w-4xl mx-auto">
 
           {/* Quick summary banner */}
-          <div className="bg-gold/5 border border-gold/20 p-6 mb-14 flex items-start gap-4">
-            <Shield size={20} className="text-gold shrink-0 mt-0.5" />
+          <div className="bg-olive/5 border border-olive/20 p-6 mb-14 flex items-start gap-4">
+            <Shield size={20} className="text-olive shrink-0 mt-0.5" />
             <div>
               <p className="text-foreground/80 text-sm font-medium mb-1">En résumé</p>
               <p className="text-foreground/50 text-xs leading-relaxed">
@@ -176,14 +176,14 @@ export default function PrivacyPage() {
                 >
                   {/* Number + icon */}
                   <div className="shrink-0 flex flex-col items-center gap-3 pt-1">
-                    <span className="luxury-heading text-3xl font-light text-gold/20 leading-none select-none">
+                    <span className="luxury-heading text-3xl font-light text-olive/20 leading-none select-none">
                       {section.number}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
-                      <Icon size={14} className="text-gold" strokeWidth={1.5} />
+                    <div className="w-8 h-8 rounded-full bg-olive/10 border border-olive/20 flex items-center justify-center">
+                      <Icon size={14} className="text-olive" strokeWidth={1.5} />
                     </div>
                     {i < sections.length - 1 && (
-                      <div className="w-px flex-1 bg-gradient-to-b from-gold/20 to-transparent min-h-[2rem]" />
+                      <div className="w-px flex-1 bg-gradient-to-b from-olive/20 to-transparent min-h-[2rem]" />
                     )}
                   </div>
 
@@ -201,7 +201,7 @@ export default function PrivacyPage() {
 
           {/* Contact CTA */}
           <div className="mt-14 border border-border bg-surface p-8 text-center">
-            <p className="text-gold text-[10px] tracking-[0.4em] uppercase mb-3">Contact</p>
+            <p className="text-olive text-[10px] tracking-[0.4em] uppercase mb-3">Contact</p>
             <p className="text-foreground/80 text-sm mb-1 font-medium">
               Une question sur vos données ?
             </p>
@@ -209,13 +209,13 @@ export default function PrivacyPage() {
               Notre équipe est disponible pour répondre à toutes vos questions
               concernant la confidentialité.
             </p>
-            <a
-              href="mailto:asmaezouggari08@gmail.com"
-              className="btn-gold inline-flex items-center gap-2"
+            <Link
+              href={`/${params.locale}/contact`}
+              className="btn-olive inline-flex items-center gap-2"
             >
               <Mail size={13} />
               Nous contacter
-            </a>
+            </Link>
           </div>
 
         </div>

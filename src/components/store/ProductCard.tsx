@@ -11,10 +11,9 @@ import {
   useTransform,
   useMotionTemplate,
 } from "framer-motion";
-import { ShoppingBag, Heart } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore, type CartProduct } from "@/store/cartStore";
-import { useWishlistStore } from "@/store/wishlistStore";
 
 interface Product {
   id: string;
@@ -41,8 +40,6 @@ export default function ProductCard({
   const t = useTranslations("shop");
   const locale = useLocale();
   const addItem = useCartStore((s) => s.addItem);
-  const { toggle, isWished } = useWishlistStore();
-  const wished = isWished(product.id);
   const [hovered, setHovered] = useState(false);
 
   const name =
@@ -154,17 +151,6 @@ export default function ProductCard({
               style={{ background: glare }}
             />
           </motion.div>
-
-          {/* Wishlist */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              toggle({ id: product.id, slug: product.slug, nameFr: product.nameFr, nameEn: product.nameEn, nameAr: product.nameAr, price: product.price, image, sku: product.sku });
-            }}
-            className="absolute top-3 ltr:right-3 rtl:left-3 w-7 h-7 bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition-all z-10 opacity-0 group-hover:opacity-100"
-          >
-            <Heart size={11} className={wished ? "text-red-400 fill-red-400" : "text-white/80"} />
-          </button>
 
           {/* Badges */}
           <div className="absolute top-3 ltr:left-3 rtl:right-3 flex gap-1.5 z-10">
